@@ -1,0 +1,311 @@
+{
+  "_description": "SLO Templates - Based on research from SCORPIO, vLLM, Splitwise, Azure OpenAI, Nielsen UX guidelines",
+  "_source": "Migrated from use_case/configs/all_usecases_config.json",
+  
+  "use_cases": {
+    "chatbot_conversational": {
+      "use_case": "Chatbot / Q&A",
+      "description": "Real-time conversational chatbots (short prompts, short responses)",
+      "traffic_profile": {
+        "prompt_tokens": 512,
+        "output_tokens": 256
+      },
+      "experience_class": "conversational",
+      "slo_targets": {
+        "ttft_ms": {"min": 100, "max": 500},
+        "itl_ms": {"min": 15, "max": 50},
+        "e2e_ms": {"min": 3000, "max": 12000}
+      },
+      "workload": {
+        "distribution": "poisson",
+        "active_fraction": 0.20,
+        "requests_per_active_user_per_min": 0.4,
+        "peak_multiplier": 2.0
+      },
+      "weights": {
+        "mmlu_pro": 0.30,
+        "ifbench": 0.30,
+        "hle": 0.20,
+        "artificial_analysis_intelligence_index": 0.15,
+        "gpqa": 0.05
+      },
+      "rationale": "Based on Nielsen's 1-second guideline. ChatGPT benchmarks show 300-800ms TTFT acceptable.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "high",
+        "throughput_priority": "medium"
+      }
+    },
+
+    "code_completion": {
+      "use_case": "Code Completion / Copilot",
+      "description": "Fast code completion/autocomplete (short prompts, short completions)",
+      "traffic_profile": {
+        "prompt_tokens": 512,
+        "output_tokens": 256
+      },
+      "experience_class": "instant",
+      "slo_targets": {
+        "ttft_ms": {"min": 50, "max": 200},
+        "itl_ms": {"min": 10, "max": 35},
+        "e2e_ms": {"min": 500, "max": 2500}
+      },
+      "workload": {
+        "distribution": "compound_poisson",
+        "active_fraction": 0.25,
+        "requests_per_active_user_per_min": 2.0,
+        "burst_size": 3,
+        "peak_multiplier": 2.5
+      },
+      "weights": {
+        "livecodebench": 0.35,
+        "scicode": 0.30,
+        "artificial_analysis_coding_index": 0.20,
+        "terminalbench_hard": 0.10,
+        "ifbench": 0.05
+      },
+      "rationale": "GitHub Copilot research: 100-200ms TTFT for fluid typing. Bursty workload from typing patterns.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "very_high",
+        "throughput_priority": "medium"
+      }
+    },
+
+    "code_generation_detailed": {
+      "use_case": "Detailed Code Generation",
+      "description": "Detailed code generation with explanations (medium prompts, long responses)",
+      "traffic_profile": {
+        "prompt_tokens": 1024,
+        "output_tokens": 1024
+      },
+      "experience_class": "conversational",
+      "slo_targets": {
+        "ttft_ms": {"min": 150, "max": 600},
+        "itl_ms": {"min": 15, "max": 45},
+        "e2e_ms": {"min": 5000, "max": 20000}
+      },
+      "workload": {
+        "distribution": "poisson",
+        "active_fraction": 0.15,
+        "requests_per_active_user_per_min": 0.3,
+        "peak_multiplier": 2.0
+      },
+      "weights": {
+        "livecodebench": 0.30,
+        "scicode": 0.25,
+        "ifbench": 0.20,
+        "artificial_analysis_coding_index": 0.15,
+        "hle": 0.10
+      },
+      "rationale": "Cursor/Aider patterns: users tolerate 0.5-1s delay for quality code generation.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "medium",
+        "throughput_priority": "medium"
+      }
+    },
+
+    "translation": {
+      "use_case": "Translation / Paraphrasing",
+      "description": "Document translation (medium prompts, medium responses)",
+      "traffic_profile": {
+        "prompt_tokens": 512,
+        "output_tokens": 256
+      },
+      "experience_class": "conversational",
+      "slo_targets": {
+        "ttft_ms": {"min": 200, "max": 800},
+        "itl_ms": {"min": 20, "max": 50},
+        "e2e_ms": {"min": 5000, "max": 20000}
+      },
+      "workload": {
+        "distribution": "poisson",
+        "active_fraction": 0.15,
+        "requests_per_active_user_per_min": 0.2,
+        "peak_multiplier": 1.8
+      },
+      "weights": {
+        "ifbench": 0.35,
+        "mmlu_pro": 0.30,
+        "hle": 0.20,
+        "artificial_analysis_intelligence_index": 0.15
+      },
+      "rationale": "DeepL/Google Translate benchmarks. Users accept 1-2s delays for quality translation.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "medium",
+        "throughput_priority": "high"
+      }
+    },
+
+    "content_generation": {
+      "use_case": "Content Generation / Writing Assistant",
+      "description": "Content creation, marketing copy (medium prompts, medium responses)",
+      "traffic_profile": {
+        "prompt_tokens": 512,
+        "output_tokens": 256
+      },
+      "experience_class": "interactive",
+      "slo_targets": {
+        "ttft_ms": {"min": 200, "max": 800},
+        "itl_ms": {"min": 20, "max": 50},
+        "e2e_ms": {"min": 5000, "max": 25000}
+      },
+      "workload": {
+        "distribution": "poisson_with_bursts",
+        "active_fraction": 0.20,
+        "requests_per_active_user_per_min": 0.5,
+        "burst_size": 2.5,
+        "peak_multiplier": 2.2
+      },
+      "weights": {
+        "mmlu_pro": 0.30,
+        "hle": 0.25,
+        "ifbench": 0.25,
+        "artificial_analysis_intelligence_index": 0.20
+      },
+      "rationale": "Jasper/Copy.ai benchmarks. Creative users prioritize quality over speed.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "low",
+        "throughput_priority": "medium"
+      }
+    },
+
+    "summarization_short": {
+      "use_case": "Summarization (Short Doc)",
+      "description": "Short document summarization (medium prompts, short summaries)",
+      "traffic_profile": {
+        "prompt_tokens": 4096,
+        "output_tokens": 512
+      },
+      "experience_class": "interactive",
+      "slo_targets": {
+        "ttft_ms": {"min": 200, "max": 800},
+        "itl_ms": {"min": 20, "max": 50},
+        "e2e_ms": {"min": 3000, "max": 15000}
+      },
+      "workload": {
+        "distribution": "poisson",
+        "active_fraction": 0.15,
+        "requests_per_active_user_per_min": 0.2,
+        "peak_multiplier": 1.8
+      },
+      "weights": {
+        "hle": 0.30,
+        "mmlu_pro": 0.25,
+        "ifbench": 0.25,
+        "artificial_analysis_intelligence_index": 0.20
+      },
+      "rationale": "Claude/GPT-4 document processing. TTFT scales ~0.3ms per input token.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "medium",
+        "throughput_priority": "high"
+      }
+    },
+
+    "document_analysis_rag": {
+      "use_case": "Document Analysis / RAG Q&A",
+      "description": "RAG-based document Q&A (long prompts with context, medium responses)",
+      "traffic_profile": {
+        "prompt_tokens": 4096,
+        "output_tokens": 512
+      },
+      "experience_class": "interactive",
+      "slo_targets": {
+        "ttft_ms": {"min": 400, "max": 1200},
+        "itl_ms": {"min": 25, "max": 60},
+        "e2e_ms": {"min": 10000, "max": 40000}
+      },
+      "workload": {
+        "distribution": "poisson_clustered",
+        "active_fraction": 0.20,
+        "requests_per_active_user_per_min": 1.0,
+        "peak_multiplier": 2.5
+      },
+      "weights": {
+        "lcr": 0.40,
+        "mmlu_pro": 0.20,
+        "hle": 0.20,
+        "ifbench": 0.10,
+        "tau2": 0.10
+      },
+      "rationale": "LangChain/LlamaIndex production patterns. RAG adds retrieval latency overhead.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "medium",
+        "throughput_priority": "high"
+      }
+    },
+
+    "long_document_summarization": {
+      "use_case": "Long Document Summarization",
+      "description": "Long document summarization (very long prompts, medium summaries)",
+      "traffic_profile": {
+        "prompt_tokens": 10240,
+        "output_tokens": 1536
+      },
+      "experience_class": "deferred",
+      "slo_targets": {
+        "ttft_ms": {"min": 800, "max": 3000},
+        "itl_ms": {"min": 30, "max": 70},
+        "e2e_ms": {"min": 20000, "max": 90000}
+      },
+      "workload": {
+        "distribution": "poisson",
+        "active_fraction": 0.10,
+        "requests_per_active_user_per_min": 0.1,
+        "peak_multiplier": 1.5
+      },
+      "weights": {
+        "lcr": 0.45,
+        "mmlu_pro": 0.20,
+        "hle": 0.20,
+        "ifbench": 0.15
+      },
+      "rationale": "Anthropic long-context research. 10K tokens need 3-5s prefill. Users expect delays.",
+      "business_context": {
+        "user_facing": true,
+        "latency_sensitivity": "low",
+        "throughput_priority": "high"
+      }
+    },
+
+    "research_legal_analysis": {
+      "use_case": "Research / Legal / Multi-Document Q&A",
+      "description": "Research/legal document analysis (very long prompts, detailed analysis)",
+      "traffic_profile": {
+        "prompt_tokens": 10240,
+        "output_tokens": 1536
+      },
+      "experience_class": "batch",
+      "slo_targets": {
+        "ttft_ms": {"min": 1500, "max": 5000},
+        "itl_ms": {"min": 30, "max": 80},
+        "e2e_ms": {"min": 60000, "max": 300000}
+      },
+      "workload": {
+        "distribution": "uniform_periodic",
+        "active_fraction": 0.10,
+        "requests_per_active_user_per_min": 0.03,
+        "peak_multiplier": 2.5
+      },
+      "weights": {
+        "lcr": 0.40,
+        "mmlu_pro": 0.25,
+        "hle": 0.15,
+        "gpqa": 0.10,
+        "ifbench": 0.05,
+        "tau2": 0.05
+      },
+      "rationale": "Harvey AI/CaseText benchmarks. Batch processing where quality > speed. 5-minute E2E acceptable.",
+      "business_context": {
+        "user_facing": false,
+        "latency_sensitivity": "very_low",
+        "throughput_priority": "very_high"
+      }
+    }
+  }
+}
