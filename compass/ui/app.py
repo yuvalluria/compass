@@ -31,6 +31,61 @@ def load_usecase_slo_workload():
 
 USECASE_SLO_WORKLOAD = load_usecase_slo_workload()
 
+# Priority-based SLO adjustment factors (from research)
+# Based on: Nielsen UX (1993), SCORPIO, vLLM, GitHub Copilot
+PRIORITY_ADJUSTMENTS = {
+    "low_latency": {
+        "ttft_factor": 0.5,   # Tighten by 50%
+        "itl_factor": 0.6,
+        "e2e_factor": 0.5,
+        "description": "Tightened for real-time applications"
+    },
+    "balanced": {
+        "ttft_factor": 1.0,
+        "itl_factor": 1.0,
+        "e2e_factor": 1.0,
+        "description": "Research-backed defaults"
+    },
+    "cost_saving": {
+        "ttft_factor": 1.5,   # Relax by 50%
+        "itl_factor": 1.3,
+        "e2e_factor": 1.5,
+        "description": "Relaxed for cost efficiency"
+    },
+    "high_throughput": {
+        "ttft_factor": 1.3,
+        "itl_factor": 1.2,
+        "e2e_factor": 1.4,
+        "description": "Relaxed for batching efficiency"
+    }
+}
+
+def apply_priority_adjustment(slo_targets: dict, priority: str) -> dict:
+    """Apply priority-based adjustment to SLO targets."""
+    if priority not in PRIORITY_ADJUSTMENTS or priority == "balanced":
+        return slo_targets
+    
+    factors = PRIORITY_ADJUSTMENTS[priority]
+    adjusted = {}
+    
+    for key, value in slo_targets.items():
+        if isinstance(value, dict) and "min" in value and "max" in value:
+            factor_key = key.replace("_ms", "_factor")
+            factor = factors.get(factor_key, 1.0)
+            
+            if priority == "low_latency":
+                # Tighten: reduce max towards min
+                new_max = int(value["min"] + (value["max"] - value["min"]) * factor)
+                adjusted[key] = {"min": value["min"], "max": new_max}
+            else:
+                # Relax: increase max
+                new_max = int(value["max"] * factor)
+                adjusted[key] = {"min": value["min"], "max": new_max}
+        else:
+            adjusted[key] = value
+    
+    return adjusted
+
 # Page configuration
 st.set_page_config(
     page_title="Compass",
@@ -630,13 +685,31 @@ def render_overview_tab(rec: dict[str, Any]):
             use_case_id = intent.get("use_case", "chatbot_conversational")
             use_case_config = USECASE_SLO_WORKLOAD.get(use_case_id, {})
             
+            # Detect priority from intent
+            priority = intent.get("priority", "balanced")
+            if not priority:
+                # Infer from latency_requirement
+                latency_req = intent.get("latency_requirement", "medium")
+                priority = "low_latency" if latency_req in ["very_high", "high"] else "balanced"
+            
             # Build JSON 2 in the exact format from usecase_slo_workload.json
             if use_case_config:
+                base_slo_targets = use_case_config.get("slo_targets", {})
+                # Apply priority-based adjustment
+                adjusted_slo_targets = apply_priority_adjustment(base_slo_targets, priority)
+                
                 slo_json = {
                     "description": use_case_config.get("description", ""),
                     "workload": use_case_config.get("workload", {}),
-                    "slo_targets": use_case_config.get("slo_targets", {})
+                    "slo_targets": adjusted_slo_targets
                 }
+                
+                # Add adjustment info if priority was applied
+                if priority != "balanced" and priority in PRIORITY_ADJUSTMENTS:
+                    slo_json["adjustment"] = {
+                        "priority": priority,
+                        "note": PRIORITY_ADJUSTMENTS[priority]["description"]
+                    }
             else:
                 # Fallback to API response if config not found
                 ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
@@ -1176,13 +1249,31 @@ def render_specifications_tab(rec: dict[str, Any]):
         use_case_id = intent.get("use_case", "chatbot_conversational")
         use_case_config = USECASE_SLO_WORKLOAD.get(use_case_id, {})
         
+        # Detect priority from intent
+        priority = intent.get("priority", "balanced")
+        if not priority:
+            # Infer from latency_requirement
+            latency_req = intent.get("latency_requirement", "medium")
+            priority = "low_latency" if latency_req in ["very_high", "high"] else "balanced"
+        
         # Build JSON 2 in the exact format from usecase_slo_workload.json
         if use_case_config:
+            base_slo_targets = use_case_config.get("slo_targets", {})
+            # Apply priority-based adjustment
+            adjusted_slo_targets = apply_priority_adjustment(base_slo_targets, priority)
+            
             slo_json = {
                 "description": use_case_config.get("description", ""),
                 "workload": use_case_config.get("workload", {}),
-                "slo_targets": use_case_config.get("slo_targets", {})
+                "slo_targets": adjusted_slo_targets
             }
+            
+            # Add adjustment info if priority was applied
+            if priority != "balanced" and priority in PRIORITY_ADJUSTMENTS:
+                slo_json["adjustment"] = {
+                    "priority": priority,
+                    "note": PRIORITY_ADJUSTMENTS[priority]["description"]
+                }
         else:
             # Fallback to API response if config not found
             ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
