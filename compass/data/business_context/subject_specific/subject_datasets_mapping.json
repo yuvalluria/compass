@@ -1,0 +1,42 @@
+{
+  "mathematics": {
+    "subject": "mathematics",
+    "evaluation_datasets": [
+      "Math 500",
+      "AIME",
+      "AIME 2025",
+      "Math Index"
+    ]
+  },
+  "reasoning": {
+    "subject": "reasoning",
+    "evaluation_datasets": [
+      "AA-LCR",
+      "τ²-Bench Telecom"
+    ]
+  },
+  "science": {
+    "subject": "science",
+    "evaluation_datasets": [
+      "SciCode",
+      "GPQA Diamond",
+      "Humanity's Last Exam"
+    ]
+  },
+  "computer_science": {
+    "subject": "computer_science",
+    "evaluation_datasets": [
+      "LiveCodeBench",
+      "IFBench",
+      "Terminal-Bench Hard",
+      "Coding Index"
+    ]
+  },
+  "general_knowledge": {
+    "subject": "general_knowledge",
+    "evaluation_datasets": [
+      "MMLU-Pro",
+      "Intelligence Index"
+    ]
+  }
+}

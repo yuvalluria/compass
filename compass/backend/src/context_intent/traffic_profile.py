@@ -4,6 +4,7 @@ import logging
 
 from ..context_intent.schema import DeploymentIntent, SLORange, SLOTargets, TrafficProfile
 from ..knowledge_base.slo_templates import SLOTemplateRepository
+from ..research.slo_adjuster import SLOAdjuster
 
 logger = logging.getLogger(__name__)
 
@@ -52,16 +53,22 @@ class TrafficProfileGenerator:
             expected_qps=expected_qps,
         )
 
-    def generate_slo_targets(self, intent: DeploymentIntent) -> SLOTargets:
+    def generate_slo_targets(
+        self, intent: DeploymentIntent, apply_priority_adjustment: bool = True
+    ) -> SLOTargets:
         """
         Generate SLO targets from deployment intent.
 
-        Uses EXACT p95 SLO targets from research-based templates.
-        These values are static and research-backed - no dynamic adjustment.
-        Includes full min/max ranges from research config.
+        Uses research-backed SLO ranges from templates.
+        When priority is specified (e.g., "low_latency"), adjusts targets accordingly:
+        - low_latency: Tighten ranges by 40-50%
+        - balanced: Use full research ranges
+        - cost_saving: Relax ranges by 30-50%
+        - high_throughput: Slightly relax for batching
 
         Args:
             intent: Deployment intent
+            apply_priority_adjustment: Whether to apply priority-based adjustments
 
         Returns:
             SLOTargets with p95 target latencies and research ranges
@@ -73,18 +80,88 @@ class TrafficProfileGenerator:
             logger.warning(f"No template found for use_case={intent.use_case}, using defaults")
             return self._generate_default_slo(intent)
 
-        # Return EXACT research values - no adjustment
-        # SLOs are based on academic research (SCORPIO, vLLM, Azure OpenAI, Nielsen UX)
-        # Include full min/max ranges from research config
+        # Get base ranges from research
+        ttft_min = template.ttft_min_ms
+        ttft_max = template.ttft_max_ms
+        itl_min = template.itl_min_ms
+        itl_max = template.itl_max_ms
+        e2e_min = template.e2e_min_ms
+        e2e_max = template.e2e_max_ms
+
+        # Determine priority from intent
+        priority = self._map_intent_to_priority(intent)
+
+        # Apply priority-based adjustment if enabled and priority is specified
+        if apply_priority_adjustment and priority != "balanced":
+            adjuster = SLOAdjuster()
+            adjusted = adjuster.adjust(
+                ttft_min=ttft_min,
+                ttft_max=ttft_max,
+                itl_min=itl_min,
+                itl_max=itl_max,
+                e2e_min=e2e_min,
+                e2e_max=e2e_max,
+                priority=priority,
+                experience_class=intent.experience_class,
+            )
+            
+            # Use adjusted targets
+            ttft_target = adjusted.adjusted_ttft_target
+            itl_target = adjusted.adjusted_itl_target
+            e2e_target = adjusted.adjusted_e2e_target
+            ttft_adjusted_max = adjusted.adjusted_ttft_max
+            itl_adjusted_max = adjusted.adjusted_itl_max
+            e2e_adjusted_max = adjusted.adjusted_e2e_max
+            
+            logger.info(
+                f"SLO adjusted for priority={priority}: "
+                f"TTFT {ttft_max}→{ttft_target}ms, ITL {itl_max}→{itl_target}ms"
+            )
+        else:
+            # Use research max values as targets
+            ttft_target = ttft_max
+            itl_target = itl_max
+            e2e_target = e2e_max
+            ttft_adjusted_max = ttft_max
+            itl_adjusted_max = itl_max
+            e2e_adjusted_max = e2e_max
+
         return SLOTargets(
-            ttft_p95_target_ms=template.ttft_p95_target_ms,
-            itl_p95_target_ms=template.itl_p95_target_ms,
-            e2e_p95_target_ms=template.e2e_p95_target_ms,
-            # Include research-backed ranges
-            ttft_range=SLORange(min=template.ttft_min_ms, max=template.ttft_max_ms),
-            itl_range=SLORange(min=template.itl_min_ms, max=template.itl_max_ms),
-            e2e_range=SLORange(min=template.e2e_min_ms, max=template.e2e_max_ms),
+            ttft_p95_target_ms=ttft_target,
+            itl_p95_target_ms=itl_target,
+            e2e_p95_target_ms=e2e_target,
+            # Include research-backed ranges (adjusted if priority specified)
+            ttft_range=SLORange(min=ttft_min, max=ttft_adjusted_max),
+            itl_range=SLORange(min=itl_min, max=itl_adjusted_max),
+            e2e_range=SLORange(min=e2e_min, max=e2e_adjusted_max),
         )
+
+    def _map_intent_to_priority(self, intent: DeploymentIntent) -> str:
+        """Map intent fields to SLO adjustment priority."""
+        # Check explicit priority field if available
+        if hasattr(intent, "priority") and intent.priority:
+            priority_mapping = {
+                "low_latency": "low_latency",
+                "latency": "low_latency",
+                "fast": "low_latency",
+                "cost_saving": "cost_saving",
+                "cost": "cost_saving",
+                "cheap": "cost_saving",
+                "high_throughput": "high_throughput",
+                "throughput": "high_throughput",
+                "quality": "quality",
+                "balanced": "balanced",
+            }
+            return priority_mapping.get(intent.priority, "balanced")
+        
+        # Infer from latency_requirement
+        latency_to_priority = {
+            "very_high": "low_latency",
+            "high": "low_latency",
+            "medium": "balanced",
+            "low": "cost_saving",
+        }
+        return latency_to_priority.get(intent.latency_requirement, "balanced")
 
     def _estimate_qps(
         self, user_count: int, requests_per_user_per_day: int, latency_requirement: str
