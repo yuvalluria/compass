@@ -1,8 +1,0 @@
-{
-  "use_case": {
-    "type": "custom",
-    "name": "chatbot_with_code",
-    "description": "I need a chatbot that can also help with code completion and programming questions"
-  }
-}
-

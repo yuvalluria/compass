@@ -1,8 +1,0 @@
-{
-  "use_case": {
-    "name": "math_problem_solver",
-    "description": "I need a model for solving math problems",
-    "task": "including algebra, calculus, and competition math"
-  }
-}
-

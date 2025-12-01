@@ -1,0 +1,13 @@
+# Recommendation Engine Dependencies
+
+# Core
+torch>=2.0.0
+numpy>=1.21.0
+
+# For integration with Stage 1 & 2
+sentence-transformers>=2.2.0
+chromadb>=0.4.0
+
+# Optional: for GPU acceleration
+# torch-cuda (install via: pip install torch --index-url https://download.pytorch.org/whl/cu118)
+

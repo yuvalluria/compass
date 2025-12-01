@@ -1,8 +1,0 @@
-{
-  "use_case": {
-    "type": "custom",
-    "name": "my_custom_task",
-    "description": "I need a model for code autocomplete and fast code suggestions"
-  }
-}
-

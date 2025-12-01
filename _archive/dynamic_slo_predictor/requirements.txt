@@ -1,0 +1,14 @@
+# Dynamic SLO Predictor - Requirements
+# =====================================
+
+# Sentence Transformers for E5 embeddings (task detection + RAG)
+sentence-transformers>=2.2.0
+
+# ChromaDB for vector database (RAG research corpus)
+chromadb>=0.4.0
+
+# Scikit-learn for cosine similarity
+scikit-learn>=1.0.0
+
+# NumPy for numerical operations
+numpy>=1.21.0
