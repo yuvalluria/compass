@@ -8,7 +8,9 @@ This module provides the main Streamlit interface for Compass, featuring:
 """
 
 import contextlib
+import json
 import time
+from pathlib import Path
 from typing import Any
 
 import requests
@@ -16,6 +18,18 @@ import streamlit as st
 
 # Configuration
 API_BASE_URL = "http://localhost:8000"
+
+# Load research-based SLO/Workload config
+def load_usecase_slo_workload():
+    """Load use case SLO and workload configuration from JSON file."""
+    config_path = Path(__file__).parent.parent / "data" / "business_context" / "use_case" / "configs" / "usecase_slo_workload.json"
+    try:
+        with open(config_path, "r") as f:
+            return json.load(f).get("use_case_slo_workload", {})
+    except FileNotFoundError:
+        return {}
+
+USECASE_SLO_WORKLOAD = load_usecase_slo_workload()
 
 # Page configuration
 st.set_page_config(
@@ -612,39 +626,36 @@ def render_overview_tab(rec: dict[str, Any]):
         
         with json_col2:
             st.markdown("#### JSON 2: SLO Specification")
-            # Build SLO with min/max ranges from research config
-            ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
-            itl_range = slo.get("itl_range", {"min": 0, "max": slo.get("itl_p95_target_ms", 0)})
-            e2e_range = slo.get("e2e_range", {"min": 0, "max": slo.get("e2e_p95_target_ms", 0)})
+            # Load from usecase_slo_workload.json based on detected use case
+            use_case_id = intent.get("use_case", "chatbot_conversational")
+            use_case_config = USECASE_SLO_WORKLOAD.get(use_case_id, {})
             
-            slo_json = {
-                "slo": {
-                    "ttft_ms": {"min": ttft_range.get("min", 0), "max": ttft_range.get("max", 0)},
-                    "itl_ms": {"min": itl_range.get("min", 0), "max": itl_range.get("max", 0)},
-                    "e2e_ms": {"min": e2e_range.get("min", 0), "max": e2e_range.get("max", 0)},
-                },
-                "workload": {
-                    "prompt_tokens": traffic.get("prompt_tokens", 0),
-                    "output_tokens": traffic.get("output_tokens", 0),
-                    "expected_qps": traffic.get("expected_qps", 1.0),
-                },
-            }
-            # Add workload distribution based on use case
-            # Research-based workload distributions from SCORPIO, vLLM, Splitwise, Azure OpenAI
-            workload_distributions = {
-                "chatbot_conversational": {"type": "poisson", "active_pct": 20, "peak_multiplier": 2.0},
-                "code_completion": {"type": "compound_poisson", "active_pct": 25, "burst_size": 3, "peak_multiplier": 2.5},
-                "code_generation_detailed": {"type": "poisson", "active_pct": 15, "peak_multiplier": 2.0},
-                "summarization_short": {"type": "poisson", "active_pct": 15, "peak_multiplier": 1.8},
-                "document_analysis_rag": {"type": "poisson_clustered", "active_pct": 20, "peak_multiplier": 2.5},
-                "long_document_summarization": {"type": "poisson", "active_pct": 10, "peak_multiplier": 1.5},
-                "research_legal_analysis": {"type": "uniform_periodic", "active_pct": 10, "peak_multiplier": 2.5},
-                "translation": {"type": "poisson", "active_pct": 15, "peak_multiplier": 1.8},
-                "content_generation": {"type": "poisson_with_bursts", "active_pct": 20, "burst_size": 2.5, "peak_multiplier": 2.2},
-            }
-            use_case = intent.get("use_case", "")
-            if use_case in workload_distributions:
-                slo_json["workload_distribution"] = workload_distributions[use_case]
+            # Build JSON 2 in the exact format from usecase_slo_workload.json
+            if use_case_config:
+                slo_json = {
+                    "description": use_case_config.get("description", ""),
+                    "workload": use_case_config.get("workload", {}),
+                    "slo_targets": use_case_config.get("slo_targets", {})
+                }
+            else:
+                # Fallback to API response if config not found
+                ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
+                itl_range = slo.get("itl_range", {"min": 0, "max": slo.get("itl_p95_target_ms", 0)})
+                e2e_range = slo.get("e2e_range", {"min": 0, "max": slo.get("e2e_p95_target_ms", 0)})
+                slo_json = {
+                    "workload": {
+                        "distribution": "poisson",
+                        "active_fraction": 0.20,
+                        "requests_per_active_user_per_min": 0.4,
+                        "peak_multiplier": 2.0
+                    },
+                    "slo_targets": {
+                        "ttft_ms": {"min": ttft_range.get("min", 0), "max": ttft_range.get("max", 0)},
+                        "itl_ms": {"min": itl_range.get("min", 0), "max": itl_range.get("max", 0)},
+                        "e2e_ms": {"min": e2e_range.get("min", 0), "max": e2e_range.get("max", 0)},
+                    }
+                }
+            
             st.json(slo_json)
         
         return
@@ -1161,38 +1172,35 @@ def render_specifications_tab(rec: dict[str, Any]):
 
     with json_col2:
         st.markdown("#### JSON 2: SLO Specification")
-        # Build SLO with min/max ranges from research config
-        ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
-        itl_range = slo.get("itl_range", {"min": 0, "max": slo.get("itl_p95_target_ms", 0)})
-        e2e_range = slo.get("e2e_range", {"min": 0, "max": slo.get("e2e_p95_target_ms", 0)})
+        # Load from usecase_slo_workload.json based on detected use case
+        use_case_id = intent.get("use_case", "chatbot_conversational")
+        use_case_config = USECASE_SLO_WORKLOAD.get(use_case_id, {})
         
-        slo_json = {
-            "slo": {
-                "ttft_ms": {"min": ttft_range.get("min", 0), "max": ttft_range.get("max", 0)},
-                "itl_ms": {"min": itl_range.get("min", 0), "max": itl_range.get("max", 0)},
-                "e2e_ms": {"min": e2e_range.get("min", 0), "max": e2e_range.get("max", 0)},
-            },
-            "workload": {
-                "prompt_tokens": traffic["prompt_tokens"],
-                "output_tokens": traffic["output_tokens"],
-                "expected_qps": traffic.get("expected_qps", 1.0),
-            },
-        }
-        # Add workload distribution info based on use case
-        # Research-based workload distributions from SCORPIO, vLLM, Splitwise, Azure OpenAI
-        workload_distributions = {
-            "chatbot_conversational": {"type": "poisson", "active_pct": 20, "peak_multiplier": 2.0},
-            "code_completion": {"type": "compound_poisson", "active_pct": 25, "burst_size": 3, "peak_multiplier": 2.5},
-            "code_generation_detailed": {"type": "poisson", "active_pct": 15, "peak_multiplier": 2.0},
-            "summarization_short": {"type": "poisson", "active_pct": 15, "peak_multiplier": 1.8},
-            "document_analysis_rag": {"type": "poisson_clustered", "active_pct": 20, "peak_multiplier": 2.5},
-            "long_document_summarization": {"type": "poisson", "active_pct": 10, "peak_multiplier": 1.5},
-            "research_legal_analysis": {"type": "uniform_periodic", "active_pct": 10, "peak_multiplier": 2.5},
-            "translation": {"type": "poisson", "active_pct": 15, "peak_multiplier": 1.8},
-            "content_generation": {"type": "poisson_with_bursts", "active_pct": 20, "burst_size": 2.5, "peak_multiplier": 2.2},
-        }
-        if intent["use_case"] in workload_distributions:
-            slo_json["workload_distribution"] = workload_distributions[intent["use_case"]]
+        # Build JSON 2 in the exact format from usecase_slo_workload.json
+        if use_case_config:
+            slo_json = {
+                "description": use_case_config.get("description", ""),
+                "workload": use_case_config.get("workload", {}),
+                "slo_targets": use_case_config.get("slo_targets", {})
+            }
+        else:
+            # Fallback to API response if config not found
+            ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
+            itl_range = slo.get("itl_range", {"min": 0, "max": slo.get("itl_p95_target_ms", 0)})
+            e2e_range = slo.get("e2e_range", {"min": 0, "max": slo.get("e2e_p95_target_ms", 0)})
+            slo_json = {
+                "workload": {
+                    "distribution": "poisson",
+                    "active_fraction": 0.20,
+                    "requests_per_active_user_per_min": 0.4,
+                    "peak_multiplier": 2.0
+                },
+                "slo_targets": {
+                    "ttft_ms": {"min": ttft_range.get("min", 0), "max": ttft_range.get("max", 0)},
+                    "itl_ms": {"min": itl_range.get("min", 0), "max": itl_range.get("max", 0)},
+                    "e2e_ms": {"min": e2e_range.get("min", 0), "max": e2e_range.get("max", 0)},
+                }
+            }
 
         st.json(slo_json)
 
