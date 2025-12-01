@@ -612,11 +612,16 @@ def render_overview_tab(rec: dict[str, Any]):
         
         with json_col2:
             st.markdown("#### JSON 2: SLO Specification")
+            # Build SLO with min/max ranges from research config
+            ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
+            itl_range = slo.get("itl_range", {"min": 0, "max": slo.get("itl_p95_target_ms", 0)})
+            e2e_range = slo.get("e2e_range", {"min": 0, "max": slo.get("e2e_p95_target_ms", 0)})
+            
             slo_json = {
                 "slo": {
-                    "ttft_p95_ms": slo.get("ttft_p95_target_ms", 0),
-                    "itl_p95_ms": slo.get("itl_p95_target_ms", 0),
-                    "e2e_p95_ms": slo.get("e2e_p95_target_ms", 0),
+                    "ttft_ms": {"min": ttft_range.get("min", 0), "max": ttft_range.get("max", 0)},
+                    "itl_ms": {"min": itl_range.get("min", 0), "max": itl_range.get("max", 0)},
+                    "e2e_ms": {"min": e2e_range.get("min", 0), "max": e2e_range.get("max", 0)},
                 },
                 "workload": {
                     "prompt_tokens": traffic.get("prompt_tokens", 0),
@@ -1156,12 +1161,16 @@ def render_specifications_tab(rec: dict[str, Any]):
 
     with json_col2:
         st.markdown("#### JSON 2: SLO Specification")
-        # Build SLO Specification JSON
+        # Build SLO with min/max ranges from research config
+        ttft_range = slo.get("ttft_range", {"min": 0, "max": slo.get("ttft_p95_target_ms", 0)})
+        itl_range = slo.get("itl_range", {"min": 0, "max": slo.get("itl_p95_target_ms", 0)})
+        e2e_range = slo.get("e2e_range", {"min": 0, "max": slo.get("e2e_p95_target_ms", 0)})
+        
         slo_json = {
             "slo": {
-                "ttft_p95_ms": slo["ttft_p95_target_ms"],
-                "itl_p95_ms": slo["itl_p95_target_ms"],
-                "e2e_p95_ms": slo["e2e_p95_target_ms"],
+                "ttft_ms": {"min": ttft_range.get("min", 0), "max": ttft_range.get("max", 0)},
+                "itl_ms": {"min": itl_range.get("min", 0), "max": itl_range.get("max", 0)},
+                "e2e_ms": {"min": e2e_range.get("min", 0), "max": e2e_range.get("max", 0)},
             },
             "workload": {
                 "prompt_tokens": traffic["prompt_tokens"],
