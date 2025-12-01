@@ -56,13 +56,14 @@ class TrafficProfileGenerator:
         """
         Generate SLO targets from deployment intent.
 
-        Uses p95 SLO targets from templates, optionally adjusted for latency requirement.
+        Uses EXACT p95 SLO targets from research-based templates.
+        These values are static and research-backed - no dynamic adjustment.
 
         Args:
             intent: Deployment intent
 
         Returns:
-            SLOTargets with p95 target latencies
+            SLOTargets with p95 target latencies (directly from research)
         """
         # Get base template for use case
         template = self.slo_repo.get_template(intent.use_case)
@@ -71,21 +72,13 @@ class TrafficProfileGenerator:
             logger.warning(f"No template found for use_case={intent.use_case}, using defaults")
             return self._generate_default_slo(intent)
 
-        # Adjust SLO targets based on latency requirement
-        ttft_target = self._adjust_slo_for_latency(
-            template.ttft_p95_target_ms, intent.latency_requirement
-        )
-        itl_target = self._adjust_slo_for_latency(
-            template.itl_p95_target_ms, intent.latency_requirement
-        )
-        e2e_target = self._adjust_slo_for_latency(
-            template.e2e_p95_target_ms, intent.latency_requirement
-        )
-
+        # Return EXACT research values - no adjustment
+        # SLOs are based on academic research (SCORPIO, vLLM, Azure OpenAI, Nielsen UX)
+        # and should remain static per use case
         return SLOTargets(
-            ttft_p95_target_ms=ttft_target,
-            itl_p95_target_ms=itl_target,
-            e2e_p95_target_ms=e2e_target,
+            ttft_p95_target_ms=template.ttft_p95_target_ms,
+            itl_p95_target_ms=template.itl_p95_target_ms,
+            e2e_p95_target_ms=template.e2e_p95_target_ms,
         )
 
     def _estimate_qps(
