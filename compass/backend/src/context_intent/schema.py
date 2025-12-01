@@ -13,12 +13,24 @@ class TrafficProfile(BaseModel):
     expected_qps: float | None = Field(None, description="Expected queries per second")
 
 
+class SLORange(BaseModel):
+    """Min/Max range for an SLO metric (from research config)."""
+    
+    min: int = Field(..., description="Minimum acceptable value (ms)")
+    max: int = Field(..., description="Maximum acceptable value / p95 target (ms)")
+
+
 class SLOTargets(BaseModel):
     """Service Level Objective targets for the deployment (p95 percentiles)."""
 
     ttft_p95_target_ms: int = Field(..., description="Time to First Token p95 target (ms)")
     itl_p95_target_ms: int = Field(..., description="Inter-Token Latency p95 target (ms/token)")
     e2e_p95_target_ms: int = Field(..., description="End-to-end latency p95 target (ms)")
+    
+    # Research-backed ranges (optional, for detailed output)
+    ttft_range: SLORange | None = Field(None, description="TTFT range from research")
+    itl_range: SLORange | None = Field(None, description="ITL range from research")
+    e2e_range: SLORange | None = Field(None, description="E2E range from research")
 
 
 class GPUConfig(BaseModel):

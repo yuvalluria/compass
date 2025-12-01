@@ -2,7 +2,7 @@
 
 import logging
 
-from ..context_intent.schema import DeploymentIntent, SLOTargets, TrafficProfile
+from ..context_intent.schema import DeploymentIntent, SLORange, SLOTargets, TrafficProfile
 from ..knowledge_base.slo_templates import SLOTemplateRepository
 
 logger = logging.getLogger(__name__)
@@ -58,12 +58,13 @@ class TrafficProfileGenerator:
 
         Uses EXACT p95 SLO targets from research-based templates.
         These values are static and research-backed - no dynamic adjustment.
+        Includes full min/max ranges from research config.
 
         Args:
             intent: Deployment intent
 
         Returns:
-            SLOTargets with p95 target latencies (directly from research)
+            SLOTargets with p95 target latencies and research ranges
         """
         # Get base template for use case
         template = self.slo_repo.get_template(intent.use_case)
@@ -74,11 +75,15 @@ class TrafficProfileGenerator:
 
         # Return EXACT research values - no adjustment
         # SLOs are based on academic research (SCORPIO, vLLM, Azure OpenAI, Nielsen UX)
-        # and should remain static per use case
+        # Include full min/max ranges from research config
         return SLOTargets(
             ttft_p95_target_ms=template.ttft_p95_target_ms,
             itl_p95_target_ms=template.itl_p95_target_ms,
             e2e_p95_target_ms=template.e2e_p95_target_ms,
+            # Include research-backed ranges
+            ttft_range=SLORange(min=template.ttft_min_ms, max=template.ttft_max_ms),
+            itl_range=SLORange(min=template.itl_min_ms, max=template.itl_max_ms),
+            e2e_range=SLORange(min=template.e2e_min_ms, max=template.e2e_max_ms),
         )
 
     def _estimate_qps(

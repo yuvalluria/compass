@@ -23,11 +23,21 @@ class SLOTemplate:
         # Experience class
         self.experience_class = data["experience_class"]
 
-        # SLO targets (p95)
+        # SLO targets with min/max ranges (from research config)
         slo = data["slo_targets"]
-        self.ttft_p95_target_ms = slo["ttft_p95_ms"]
-        self.itl_p95_target_ms = slo["itl_p95_ms"]
-        self.e2e_p95_target_ms = slo["e2e_p95_ms"]
+        
+        # Store full ranges from research
+        self.ttft_min_ms = slo["ttft_ms"]["min"]
+        self.ttft_max_ms = slo["ttft_ms"]["max"]
+        self.itl_min_ms = slo["itl_ms"]["min"]
+        self.itl_max_ms = slo["itl_ms"]["max"]
+        self.e2e_min_ms = slo["e2e_ms"]["min"]
+        self.e2e_max_ms = slo["e2e_ms"]["max"]
+        
+        # p95 targets are the max values (for backward compatibility)
+        self.ttft_p95_target_ms = self.ttft_max_ms
+        self.itl_p95_target_ms = self.itl_max_ms
+        self.e2e_p95_target_ms = self.e2e_max_ms
 
         # Rationale and business context
         self.rationale = data.get("rationale", "")
@@ -38,7 +48,7 @@ class SLOTemplate:
         self.throughput_priority = context.get("throughput_priority", "medium")
 
     def to_dict(self) -> dict:
-        """Convert to dictionary."""
+        """Convert to dictionary with full SLO ranges."""
         return {
             "use_case_id": self.use_case_id,
             "use_case": self.use_case,
@@ -49,9 +59,9 @@ class SLOTemplate:
             },
             "experience_class": self.experience_class,
             "slo_targets": {
-                "ttft_p95_ms": self.ttft_p95_target_ms,
-                "itl_p95_ms": self.itl_p95_target_ms,
-                "e2e_p95_ms": self.e2e_p95_target_ms,
+                "ttft_ms": {"min": self.ttft_min_ms, "max": self.ttft_max_ms},
+                "itl_ms": {"min": self.itl_min_ms, "max": self.itl_max_ms},
+                "e2e_ms": {"min": self.e2e_min_ms, "max": self.e2e_max_ms},
             },
             "rationale": self.rationale,
             "business_context": {
