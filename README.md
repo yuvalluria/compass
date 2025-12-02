@@ -192,6 +192,32 @@ make cluster-stop   # Delete cluster (optional)
 
 ---
 
+## ⚙️ Environment Variables
+
+Configuration is managed via environment variables. Create a `.env` file in the project root:
+
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://postgres:compass@localhost:5432/compass` | **Production** |
+| `CORS_ORIGINS` | Allowed origins (comma-separated) | `http://localhost:8501` | **Production** |
+| `API_BASE_URL` | Backend API URL (for UI) | `http://localhost:8000` | No |
+| `OLLAMA_HOST` | Ollama server URL | `http://localhost:11434` | No |
+| `OLLAMA_MODEL` | LLM model name | `llama3.1:8b` | No |
+| `SIMULATOR_MODE` | Use GPU simulator | `true` | No |
+| `K8S_NAMESPACE` | Kubernetes namespace | `default` | No |
+| `COMPASS_DEBUG` | Enable debug logging | `false` | No |
+
+**Example `.env` for production:**
+```bash
+DATABASE_URL=postgresql://user:secure_password@db.example.com:5432/compass
+CORS_ORIGINS=https://compass.example.com
+SIMULATOR_MODE=false
+```
+
+> ⚠️ **Security:** Never commit `.env` files to git. The `.gitignore` already excludes them.
+
+---
+
 ## 📊 Supported Use Cases
 
 | Use Case | TTFT Range | ITL Range | Workload Pattern |
