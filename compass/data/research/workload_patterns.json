@@ -1,0 +1,111 @@
+{
+  "_description": "Research-backed workload distribution patterns for LLM use cases",
+  "_sources": [
+    "Meta LLM Serving Research",
+    "Google Cloud AI Platform Studies",
+    "AWS SageMaker Workload Analysis",
+    "Azure OpenAI Usage Patterns",
+    "Queueing Theory for ML Systems",
+    "RAGPulse: Real-world RAG Workload Analysis"
+  ],
+  
+  "workload_distributions": {
+    "chatbot_conversational": {
+      "distribution": "poisson",
+      "active_fraction": {"mean": 0.20, "std": 0.05},
+      "requests_per_active_user_per_min": {"mean": 0.4, "std": 0.1},
+      "peak_multiplier": 2.0,
+      "peak_hours": "9-11am, 2-4pm",
+      "description": "Poisson arrivals with 20% concurrent users, λ=0.4 req/min when active"
+    },
+    
+    "code_completion": {
+      "distribution": "compound_poisson",
+      "active_fraction": {"mean": 0.25, "std": 0.08},
+      "requests_per_active_user_per_min": {"mean": 2.0, "std": 0.5},
+      "burst_size": 3,
+      "peak_multiplier": 2.5,
+      "description": "Bursty pattern - typing triggers bursts of 2-5 requests"
+    },
+    
+    "code_generation_detailed": {
+      "distribution": "poisson",
+      "active_fraction": {"mean": 0.15, "std": 0.05},
+      "requests_per_active_user_per_min": {"mean": 0.3, "std": 0.1},
+      "peak_multiplier": 2.0,
+      "description": "Session-based - developers make occasional detailed requests"
+    },
+    
+    "translation": {
+      "distribution": "poisson",
+      "active_fraction": {"mean": 0.15, "std": 0.05},
+      "requests_per_active_user_per_min": {"mean": 0.2, "std": 0.05},
+      "peak_multiplier": 1.8,
+      "description": "Moderate arrival rate with periodic batch translations"
+    },
+    
+    "content_generation": {
+      "distribution": "poisson_with_bursts",
+      "active_fraction": {"mean": 0.20, "std": 0.05},
+      "requests_per_active_user_per_min": {"mean": 0.5, "std": 0.15},
+      "burst_size": 2.5,
+      "peak_multiplier": 2.2,
+      "description": "Creative sessions with occasional revision bursts"
+    },
+    
+    "summarization_short": {
+      "distribution": "poisson",
+      "active_fraction": {"mean": 0.15, "std": 0.05},
+      "requests_per_active_user_per_min": {"mean": 0.2, "std": 0.05},
+      "peak_multiplier": 1.8,
+      "description": "Steady arrival rate for document processing"
+    },
+    
+    "document_analysis_rag": {
+      "distribution": "poisson_clustered",
+      "active_fraction": {"mean": 0.20, "std": 0.05},
+      "requests_per_active_user_per_min": {"mean": 1.0, "std": 0.3},
+      "peak_multiplier": 2.5,
+      "description": "Clustered arrivals - users ask follow-up questions"
+    },
+    
+    "long_document_summarization": {
+      "distribution": "poisson",
+      "active_fraction": {"mean": 0.10, "std": 0.03},
+      "requests_per_active_user_per_min": {"mean": 0.1, "std": 0.03},
+      "peak_multiplier": 1.5,
+      "description": "Low frequency, high compute per request"
+    },
+    
+    "research_legal_analysis": {
+      "distribution": "uniform_periodic",
+      "active_fraction": {"mean": 0.10, "std": 0.03},
+      "requests_per_active_user_per_min": {"mean": 0.03, "std": 0.01},
+      "peak_multiplier": 2.5,
+      "peak_hours": "Business hours only",
+      "description": "Batch processing with periodic submission windows"
+    }
+  },
+  
+  "traffic_profiles": {
+    "chatbot_conversational": {"prompt_tokens": 512, "output_tokens": 256},
+    "code_completion": {"prompt_tokens": 512, "output_tokens": 256},
+    "code_generation_detailed": {"prompt_tokens": 1024, "output_tokens": 1024},
+    "translation": {"prompt_tokens": 512, "output_tokens": 256},
+    "content_generation": {"prompt_tokens": 512, "output_tokens": 256},
+    "summarization_short": {"prompt_tokens": 4096, "output_tokens": 512},
+    "document_analysis_rag": {"prompt_tokens": 4096, "output_tokens": 512},
+    "long_document_summarization": {"prompt_tokens": 10240, "output_tokens": 1536},
+    "research_legal_analysis": {"prompt_tokens": 10240, "output_tokens": 1536}
+  },
+  
+  "capacity_planning": {
+    "description": "Formulas for capacity planning based on workload patterns",
+    "concurrent_users": "user_count * active_fraction",
+    "rps_mean": "(concurrent_users * requests_per_minute) / 60",
+    "rps_p95": "rps_mean * peak_multiplier",
+    "headroom_recommended": 1.5,
+    "note": "Plan for 1.5x p95 RPS to handle unexpected spikes"
+  }
+}
+

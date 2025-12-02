@@ -1,19 +1,24 @@
-# Core dependencies
+# =============================================================================
+# COMPASS - Dependencies
+# =============================================================================
+
+# Core Framework
 fastapi==0.115.0
 uvicorn[standard]==0.32.0
 pydantic==2.9.2
 pydantic-settings==2.6.0
 
-# LLM integration
+# LLM Integration
 ollama==0.3.3
 
-# Data handling
+# Data Handling
 pandas==2.2.0
+numpy>=1.21.0
 
 # PostgreSQL
 psycopg2-binary==2.9.10
 
-# YAML generation
+# YAML Generation
 jinja2==3.1.6
 pyyaml==6.0.2
 
@@ -21,10 +26,15 @@ pyyaml==6.0.2
 streamlit==1.39.0
 requests==2.32.5
 
+# ML/Embeddings (for semantic matching)
+sentence-transformers>=2.2.0
+scikit-learn>=1.0.0
+torch>=1.9.0
+
 # Testing
 pytest==8.3.3
 pytest-asyncio==0.24.0
 httpx==0.27.2
 
-# Development tools
+# Development Tools
 ruff==0.8.4

@@ -1,3 +1,7 @@
+# =============================================================================
+# COMPASS - Unified .gitignore
+# =============================================================================
+
 # Python
 __pycache__/
 *.py[cod]
@@ -7,6 +11,7 @@ __pycache__/
 venv/
 env/
 ENV/
+.venv/
 build/
 develop-eggs/
 dist/
@@ -29,7 +34,10 @@ wheels/
 *.swp
 *.swo
 *~
+
+# OS
 .DS_Store
+Thumbs.db
 
 # Testing
 .pytest_cache/
@@ -41,15 +49,16 @@ htmlcov/
 .env
 .env.local
 
-# Generated configs
-generated_configs/*.yaml
-generated_configs/*.yml
-!generated_configs/.gitkeep
-
 # Logs
 *.log
 logs/
+!logs/.gitkeep
 !logs/prompts/.gitkeep
+
+# Generated configs (YAML can be regenerated)
+generated_configs/*.yaml
+generated_configs/*.yml
+!generated_configs/.gitkeep
 
 # Ollama
 .ollama/
@@ -60,6 +69,23 @@ logs/
 # Runtime
 .pids/
 
-# Data
+# Database
 *.sql
 !scripts/schema.sql
+
+# Temporary files
+*.tmp
+
+# Output files (can be regenerated)
+best_models_*.csv
+
+# Large data files (keep configs)
+!data/**/*.json
+!configs/**/*.json
+
+# Model weights (download separately)
+*.bin
+*.onnx
+*.pt
+*.pth
+*.safetensors

@@ -1,35 +1,14 @@
+# Root .gitignore - Main config in compass/.gitignore
+
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-env/
+.venv/
 venv/
-ENV/
-.venv
 
-# Data files (keep CSVs, ignore large JSON)
-*.json
-!package*.json
-!configs/**/*.json
-!subject_datasets_mapping.json
+# OS
+.DS_Store
 
 # IDE
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Temporary files
-*.tmp
-*.log
-
-# Output CSV files (can be regenerated)
-best_models_*.csv
-
-
