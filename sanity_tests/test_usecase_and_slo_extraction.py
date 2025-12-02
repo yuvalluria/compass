@@ -7,7 +7,6 @@ Tests that the system correctly extracts TWO key JSON outputs from natural langu
    - use_case: (required) Detected use case type
    - user_count: (required) Number of users
    - priority: (optional) Only if user mentions priority/latency/cost preference
-   - hardware: (optional) Only if user mentions specific hardware
 
 2. SLO JSON (Service Level Objectives):
    - ttft_p95_target_ms: Time to First Token target
@@ -18,13 +17,15 @@ Tests that the system correctly extracts TWO key JSON outputs from natural langu
    - "low_latency" → Tighter SLO values (faster response required)
    - "balanced" → Standard SLO values
    - "cost_saving" → Relaxed SLO values (slower is OK for lower cost)
+   - "high_throughput" → Slightly relaxed for better batching
 
 Test Cases:
 1. Basic: use_case + user_count only (no priority → balanced SLO)
 2. Low Latency Priority: SLO should be TIGHTER
 3. Cost Saving Priority: SLO should be MORE RELAXED
-4. With Hardware: use_case + user_count + hardware
-5. Full: all fields specified
+4. High Throughput Priority: priority detected
+5. Balanced Default: no priority mentioned
+6. SLO Comparison: verifies low_latency < cost_saving
 """
 
 import json
@@ -225,21 +226,21 @@ def test_cost_saving_priority():
     )
 
 
-def test_with_hardware():
-    """Test 4: With hardware constraint"""
+def test_with_high_throughput():
+    """Test 4: With high throughput priority"""
     return run_test(
-        test_name="With Hardware (use_case + user_count + hardware)",
-        input_text="translation service for 200 users on A100 GPU",
-        expected_task_keys=["use_case", "user_count", "hardware"]
+        test_name="High Throughput Priority",
+        input_text="translation service for 2000 users, need to handle high volume of requests",
+        expected_task_keys=["use_case", "user_count", "priority"]
     )
 
 
-def test_full_extraction():
-    """Test 5: Full extraction - all fields"""
+def test_balanced_default():
+    """Test 5: No priority mentioned - should use balanced defaults"""
     return run_test(
-        test_name="Full Extraction (all optional fields)",
-        input_text="RAG assistant for 500 analysts, need low latency, must use H100 GPUs",
-        expected_task_keys=["use_case", "user_count", "priority", "hardware"]
+        test_name="Balanced Default (no priority mentioned)",
+        input_text="RAG document assistant for 500 analysts",
+        expected_task_keys=["use_case", "user_count"]
     )
 
 
@@ -253,17 +254,17 @@ def test_slo_priority_comparison():
     print("  - low_latency → LOWER latency values (tighter/faster)")
     print("  - cost_saving → HIGHER latency values (relaxed/slower)")
     
-    # Get low latency SLO
+    # Get low latency SLO - use clear "latency is critical" phrase
     print("\n📝 Testing LOW LATENCY priority...")
     low_latency_result = call_recommendation_api(
-        "chatbot for 500 users, need very fast response, latency is key"
+        "chatbot for 500 users, latency is critical, need instant responses"
     )
     low_latency_slo = extract_slo_json(low_latency_result) if low_latency_result else None
     
-    # Get cost saving SLO
+    # Get cost saving SLO - use clear "minimize cost" phrase
     print("📝 Testing COST SAVING priority...")
     cost_saving_result = call_recommendation_api(
-        "chatbot for 500 users, cost is the main priority, latency is not important"
+        "chatbot for 500 users, minimize cost is the priority, slower responses are acceptable"
     )
     cost_saving_slo = extract_slo_json(cost_saving_result) if cost_saving_result else None
     
@@ -322,8 +323,8 @@ Priority affects SLO:
         ("Basic Extraction", test_basic_extraction),
         ("Low Latency Priority", test_low_latency_priority),
         ("Cost Saving Priority", test_cost_saving_priority),
-        ("With Hardware", test_with_hardware),
-        ("Full Extraction", test_full_extraction),
+        ("High Throughput Priority", test_with_high_throughput),
+        ("Balanced Default", test_balanced_default),
         ("SLO Priority Comparison", test_slo_priority_comparison),
     ]
     

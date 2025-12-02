@@ -11,8 +11,7 @@ When a user types a natural language request, Compass extracts:
 {
   "use_case": "chatbot_conversational",  // Required - detected use case
   "user_count": 500,                     // Required - number of users
-  "priority": "low_latency",             // Optional - only if mentioned
-  "hardware": "A100"                     // Optional - only if mentioned
+  "priority": "low_latency"              // Optional - only if mentioned
 }
 ```
 
@@ -41,8 +40,8 @@ Based on the use case and priority, Compass generates SLO targets:
 | 1 | Basic | "chatbot for 500 users" | use_case + user_count |
 | 2 | Low Latency | "code assistant, latency is critical" | priority=low_latency, tight SLO |
 | 3 | Cost Saving | "summarization, minimize cost" | priority=cost_saving, relaxed SLO |
-| 4 | With Hardware | "translation on A100 GPU" | hardware field populated |
-| 5 | Full | "RAG for 500 users, low latency, H100" | All fields populated |
+| 4 | High Throughput | "translation for 2000 users, high volume" | priority=high_throughput |
+| 5 | Balanced Default | "RAG assistant for 500 analysts" | No priority (balanced default) |
 | 6 | SLO Comparison | Compare low_latency vs cost_saving | low_latency SLO < cost_saving SLO |
 
 ## Running Tests
