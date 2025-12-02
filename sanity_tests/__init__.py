@@ -1,2 +1,1 @@
-"""Sanity tests for Compass Task Analysis extraction."""
-
+"""Sanity tests for Compass - validates use case and SLO extraction."""

@@ -1,79 +1,132 @@
-# Sanity Tests for Task Analysis Extraction
+# Sanity Tests for Compass
 
-These tests verify that the Compass system correctly extracts **Task Analysis JSON** from natural language input.
+These tests verify that Compass correctly extracts structured data from natural language.
 
-## Task Analysis JSON Structure
+## What Gets Tested
+
+### 1. Task Analysis JSON (Use Case Extraction)
+When a user types a natural language request, Compass extracts:
 
 ```json
 {
-  "use_case": "code_completion",     // Required - detected use case
-  "user_count": 500,                 // Required - number of users
-  "priority": "low_latency",         // Optional - only if mentioned
-  "hardware": "A100",                // Optional - only if mentioned
-  "domain": ["healthcare"]           // Optional - only if mentioned
+  "use_case": "chatbot_conversational",  // Required - detected use case
+  "user_count": 500,                     // Required - number of users
+  "priority": "low_latency",             // Optional - only if mentioned
+  "hardware": "A100"                     // Optional - only if mentioned
 }
 ```
 
+### 2. SLO JSON (Service Level Objectives)
+Based on the use case and priority, Compass generates SLO targets:
+
+```json
+{
+  "ttft_p95_target_ms": 300,    // Time to First Token
+  "itl_p95_target_ms": 30,      // Inter-Token Latency
+  "e2e_p95_target_ms": 8000     // End-to-End latency
+}
+```
+
+**Priority affects SLO targets:**
+| Priority | Effect | Example |
+|----------|--------|---------|
+| `low_latency` | Tighter SLO (faster) | TTFT: 150ms |
+| `balanced` | Standard SLO | TTFT: 300ms |
+| `cost_saving` | Relaxed SLO (slower OK) | TTFT: 450ms |
+
 ## Test Cases
 
-| Test | Input | Expected Keys |
-|------|-------|---------------|
-| **Basic** | "chatbot for 500 users" | use_case, user_count |
-| **With Priority** | "code assistant for 300 developers, latency is key" | use_case, user_count, priority |
-| **With Hardware** | "summarization for 1000 users on A100 GPUs" | use_case, user_count, hardware |
-| **Full** | "legal analysis for 200 lawyers in healthcare, cost priority, H100" | use_case, user_count, priority, hardware, domain |
+| # | Test | Input Example | Validates |
+|---|------|---------------|-----------|
+| 1 | Basic | "chatbot for 500 users" | use_case + user_count |
+| 2 | Low Latency | "code assistant, latency is critical" | priority=low_latency, tight SLO |
+| 3 | Cost Saving | "summarization, minimize cost" | priority=cost_saving, relaxed SLO |
+| 4 | With Hardware | "translation on A100 GPU" | hardware field populated |
+| 5 | Full | "RAG for 500 users, low latency, H100" | All fields populated |
+| 6 | SLO Comparison | Compare low_latency vs cost_saving | low_latency SLO < cost_saving SLO |
 
 ## Running Tests
 
 ### Prerequisites
 1. Start the Compass backend:
    ```bash
-   cd compass
    make postgres-start
    make dev
    ```
 
-2. Wait for services to be ready (backend on port 8000)
+2. Wait for backend to be ready on port 8000
 
 ### Run Tests
 ```bash
-cd compass/sanity_tests
-python test_task_analysis_extraction.py
+# From project root
+python sanity_tests/test_usecase_and_slo_extraction.py
+
+# Or with custom API URL
+API_BASE_URL=http://localhost:8000 python sanity_tests/test_usecase_and_slo_extraction.py
 ```
 
 ### Expected Output
 ```
-============================================================
-🧪 TASK ANALYSIS EXTRACTION - SANITY TESTS
-============================================================
+══════════════════════════════════════════════════════════════════════
+  🧪 USE CASE + SLO EXTRACTION SANITY TESTS
+══════════════════════════════════════════════════════════════════════
 
-TEST: Basic Extraction (use_case + user_count)
+──────────────────────────────────────────────────────────────────────
+🧪 TEST: Basic Extraction (use_case + user_count)
+──────────────────────────────────────────────────────────────────────
 📝 Input: "chatbot for 500 users"
 
-📋 Task Analysis JSON:
+📋 TASK ANALYSIS JSON:
 {
   "use_case": "chatbot_conversational",
   "user_count": 500
 }
 
-✅ PASS: Got expected keys ['use_case', 'user_count']
+📊 SLO JSON:
+{
+  "ttft_p95_target_ms": 300,
+  "itl_p95_target_ms": 30,
+  "e2e_p95_target_ms": 8000
+}
+
+✅ Task JSON: Got expected keys: ['use_case', 'user_count']
+✅ SLO JSON: Valid SLO: TTFT=300ms, ITL=30ms, E2E=8000ms
 
 ... (more tests)
 
-📊 TEST SUMMARY
-  ✅ PASS: Basic
-  ✅ PASS: With Priority
+══════════════════════════════════════════════════════════════════════
+  📊 TEST SUMMARY
+══════════════════════════════════════════════════════════════════════
+  ✅ PASS: Basic Extraction
+  ✅ PASS: Low Latency Priority
+  ✅ PASS: Cost Saving Priority
   ✅ PASS: With Hardware
-  ✅ PASS: Full
+  ✅ PASS: Full Extraction
+  ✅ PASS: SLO Priority Comparison
 
-Total: 4/4 tests passed
-🎉 All sanity tests passed!
+  Total: 6/6 tests passed
+
+  🎉 All sanity tests passed!
 ```
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `test_usecase_and_slo_extraction.py` | Main sanity test suite |
+| `README.md` | This documentation |
 
 ## How It Works
 
-1. Test sends natural language input to `/recommend` API
-2. API uses LLM (Ollama) to extract structured intent
-3. Test extracts Task Analysis JSON from response
-4. Test verifies only expected keys are present (optional fields only when mentioned)
-
+```
+User Input                  Compass API                    Output
+─────────                   ───────────                    ──────
+"chatbot for            →   /api/v1/recommend          →   Task JSON:
+ 500 users,                       │                        {use_case, user_count,
+ latency critical"               │                         priority}
+                                 │
+                                 │                        SLO JSON:
+                     LLM extracts intent                  {ttft, itl, e2e}
+                     SLO generated based on              (adjusted by priority)
+                     use_case + priority
+```
