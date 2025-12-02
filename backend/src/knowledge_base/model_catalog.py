@@ -80,7 +80,7 @@ class ModelCatalog:
             data_path: Path to model_catalog.json
         """
         if data_path is None:
-            data_path = Path(__file__).parent.parent.parent.parent / "data" / "model_catalog.json"
+            data_path = Path(__file__).parent.parent.parent.parent / "data" / "benchmarks" / "models" / "model_catalog.json"
 
         self.data_path = data_path
         self._models: dict[str, ModelInfo] = {}
