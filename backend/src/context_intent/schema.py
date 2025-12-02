@@ -80,6 +80,11 @@ class DeploymentIntent(BaseModel):
         default=None, description="User's stated priority (detected from phrases like 'latency is key')"
     )
 
+    hardware_preference: str | None = Field(
+        default=None, 
+        description="Specific GPU/hardware mentioned by user (e.g., 'H100', 'A100', 'L4')"
+    )
+
     domain_specialization: list[str] = Field(
         default_factory=lambda: ["general"],
         description="Domain requirements (general, code, multilingual, enterprise)",

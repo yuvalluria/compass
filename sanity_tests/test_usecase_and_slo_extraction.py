@@ -7,6 +7,7 @@ Tests that the system correctly extracts TWO key JSON outputs from natural langu
    - use_case: (required) Detected use case type
    - user_count: (required) Number of users
    - priority: (optional) Only if user mentions priority/latency/cost preference
+   - hardware: (optional) Only if user mentions specific GPU (H100, A100, L4, etc.)
 
 2. SLO JSON (Service Level Objectives):
    - ttft_p95_target_ms: Time to First Token target
@@ -17,14 +18,13 @@ Tests that the system correctly extracts TWO key JSON outputs from natural langu
    - "low_latency" → Tighter SLO values (faster response required)
    - "balanced" → Standard SLO values
    - "cost_saving" → Relaxed SLO values (slower is OK for lower cost)
-   - "high_throughput" → Slightly relaxed for better batching
 
 Test Cases:
 1. Basic: use_case + user_count only (no priority → balanced SLO)
 2. Low Latency Priority: SLO should be TIGHTER
 3. Cost Saving Priority: SLO should be MORE RELAXED
-4. High Throughput Priority: priority detected
-5. Balanced Default: no priority mentioned
+4. With Hardware: hardware extracted from "on A100 GPU"
+5. Full Extraction: priority + hardware extracted
 6. SLO Comparison: verifies low_latency < cost_saving
 """
 
@@ -77,8 +77,8 @@ def extract_task_analysis_json(response: dict) -> dict:
     # Add optional fields only if present and meaningful
     if intent.get("priority"):
         task_json["priority"] = intent["priority"]
-    if intent.get("hardware_constraint"):
-        task_json["hardware"] = intent["hardware_constraint"]
+    if intent.get("hardware_preference"):
+        task_json["hardware"] = intent["hardware_preference"]
     
     return task_json
 
@@ -226,21 +226,21 @@ def test_cost_saving_priority():
     )
 
 
-def test_with_high_throughput():
-    """Test 4: With high throughput priority"""
+def test_with_hardware():
+    """Test 4: With hardware constraint"""
     return run_test(
-        test_name="High Throughput Priority",
-        input_text="translation service for 2000 users, need to handle high volume of requests",
-        expected_task_keys=["use_case", "user_count", "priority"]
+        test_name="With Hardware (use_case + user_count + hardware)",
+        input_text="translation service for 200 users on A100 GPU",
+        expected_task_keys=["use_case", "user_count", "hardware"]
     )
 
 
-def test_balanced_default():
-    """Test 5: No priority mentioned - should use balanced defaults"""
+def test_full_extraction():
+    """Test 5: Full extraction - all optional fields"""
     return run_test(
-        test_name="Balanced Default (no priority mentioned)",
-        input_text="RAG document assistant for 500 analysts",
-        expected_task_keys=["use_case", "user_count"]
+        test_name="Full Extraction (priority + hardware)",
+        input_text="RAG assistant for 500 analysts, need low latency, must use H100 GPUs",
+        expected_task_keys=["use_case", "user_count", "priority", "hardware"]
     )
 
 
@@ -323,8 +323,8 @@ Priority affects SLO:
         ("Basic Extraction", test_basic_extraction),
         ("Low Latency Priority", test_low_latency_priority),
         ("Cost Saving Priority", test_cost_saving_priority),
-        ("High Throughput Priority", test_with_high_throughput),
-        ("Balanced Default", test_balanced_default),
+        ("With Hardware", test_with_hardware),
+        ("Full Extraction", test_full_extraction),
         ("SLO Priority Comparison", test_slo_priority_comparison),
     ]
     

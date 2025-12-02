@@ -9,6 +9,7 @@ Expected JSON schema:
   "latency_requirement": "very_high|high|medium|low",
   "throughput_priority": "very_high|high|medium|low",
   "budget_constraint": "strict|moderate|flexible|none",
+  "hardware_preference": "<GPU type if mentioned, e.g. 'H100', 'A100', 'L4', or null if not specified>",
   "domain_specialization": ["general"|"code"|"multilingual"|"enterprise"],
   "additional_context": "<any other relevant details mentioned>"
 }
@@ -64,7 +65,8 @@ Your task is to extract structured information about their deployment requiremen
 3. **Latency requirement**: How important is low latency? (very_high = sub-500ms, high = sub-2s, medium = 2-5s, low = >5s acceptable)
 4. **Throughput priority**: Is high request volume more important than low latency?
 5. **Budget constraint**: How price-sensitive are they?
-6. **Domain specialization**: Any specific domains mentioned (code, multilingual, enterprise, etc.)
+6. **Hardware preference**: Did they mention specific GPU types? (H100, A100, A10, L4, T4, etc.)
+7. **Domain specialization**: Any specific domains mentioned (code, multilingual, enterprise, etc.)
 
 Be intelligent about inference:
 - "thousands of users" → estimate specific number
@@ -75,6 +77,8 @@ Be intelligent about inference:
 - "budget is flexible" or "no budget constraint" → budget_constraint: flexible or none
 - No budget mentioned → budget_constraint: moderate
 - "cost-sensitive" or "cost efficiency important" → budget_constraint: strict or moderate
+- "on H100" or "using A100" or "must use L4" → hardware_preference: extract the GPU type (H100, A100, L4, etc.)
+- No hardware mentioned → hardware_preference: null
 
 {INTENT_EXTRACTION_SCHEMA}
 """
