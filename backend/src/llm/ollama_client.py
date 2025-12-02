@@ -1,8 +1,15 @@
-"""Ollama client wrapper for LLM interactions."""
+"""Ollama client wrapper for LLM interactions.
+
+Environment Variables:
+    OLLAMA_HOST: Ollama server URL (default: http://localhost:11434)
+    OLLAMA_MODEL: Model to use (default: llama3.1:8b)
+"""
 
 import json
 import logging
 from typing import Any
+
+from ..config import settings
 
 try:
     import ollama
@@ -19,16 +26,18 @@ logger = logging.getLogger(__name__)
 class OllamaClient:
     """Client for interacting with Ollama LLM service."""
 
-    def __init__(self, model: str = "llama3.1:8b", host: str | None = None):
+    def __init__(self, model: str | None = None, host: str | None = None):
         """
         Initialize Ollama client.
 
         Args:
-            model: Model name to use (default: llama3.1:8b)
-            host: Optional Ollama host URL (defaults to localhost:11434)
+            model: Model name to use (default from OLLAMA_MODEL env var)
+            host: Ollama host URL (default from OLLAMA_HOST env var)
         """
-        self.model = model
-        self.host = host
+        self.model = model or settings.ollama_model
+        self.host = host or settings.ollama_host
+        
+        logger.info(f"OllamaClient initialized: model={self.model}, host={self.host}")
 
         if not OLLAMA_AVAILABLE:
             logger.error("Ollama library not installed. Install with: pip install ollama")

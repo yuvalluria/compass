@@ -22,11 +22,12 @@ testing, or future UI features that may need to display available options.
 """
 
 import logging
-import os
 from typing import Optional
 
 import psycopg2
 from psycopg2.extras import RealDictCursor
+
+from ..config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -107,12 +108,25 @@ class BenchmarkRepository:
         Initialize benchmark repository.
 
         Args:
-            database_url: PostgreSQL connection string (defaults to DATABASE_URL env var)
+            database_url: PostgreSQL connection string (defaults to settings.database_url)
+        
+        Environment Variables:
+            DATABASE_URL: PostgreSQL connection string
+                Example: postgresql://user:password@host:5432/dbname
+        
+        Security Note:
+            In production, always set DATABASE_URL environment variable.
+            Never commit credentials to source control.
         """
-        self.database_url = database_url or os.getenv(
-            "DATABASE_URL",
-            "postgresql://postgres:compass@localhost:5432/compass"
-        )
+        self.database_url = database_url or settings.database_url
+        
+        # Warn if using default development credentials
+        if "compass@localhost" in self.database_url:
+            logger.warning(
+                "[SECURITY] Using default database credentials. "
+                "Set DATABASE_URL environment variable for production."
+            )
+        
         self._test_connection()
 
     def _test_connection(self):

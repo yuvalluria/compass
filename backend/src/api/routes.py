@@ -1,13 +1,13 @@
 """FastAPI routes for the Compass API."""
 
 import logging
-import os
 from datetime import datetime
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from ..config import settings
 from ..context_intent.schema import ConversationMessage, DeploymentRecommendation
 from ..deployment.cluster import KubernetesClusterManager, KubernetesDeploymentError
 from ..deployment.generator import DeploymentGenerator
@@ -16,9 +16,8 @@ from ..knowledge_base.model_catalog import ModelCatalog
 from ..knowledge_base.slo_templates import SLOTemplateRepository
 from ..orchestration.workflow import RecommendationWorkflow
 
-# Configure logging - check for DEBUG environment variable
-debug_mode = os.getenv("COMPASS_DEBUG", "false").lower() == "true"
-log_level = logging.DEBUG if debug_mode else logging.INFO
+# Configure logging from settings
+log_level = logging.DEBUG if settings.debug else logging.INFO
 logging.basicConfig(
     level=log_level,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -27,17 +26,24 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logger.info(f"Compass API starting with log level: {logging.getLevelName(log_level)}")
 
+# Validate production configuration
+config_warnings = settings.validate_production_config()
+for warning in config_warnings:
+    logger.warning(f"[CONFIG] {warning}")
+
 # Create FastAPI app
 app = FastAPI(
     title="Compass API", description="API for LLM deployment recommendations", version="0.1.0"
 )
 
-# Add CORS middleware
+# Add CORS middleware with configurable origins
+# In production, set CORS_ORIGINS environment variable to specific domains
+logger.info(f"CORS allowed origins: {settings.cors_origins_list}")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify actual origins
+    allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -45,14 +51,15 @@ app.add_middleware(
 workflow = RecommendationWorkflow()
 model_catalog = ModelCatalog()
 slo_repo = SLOTemplateRepository()
-# Use simulator mode by default (no GPU required for development)
-deployment_generator = DeploymentGenerator(simulator_mode=True)
+# Simulator mode controlled via SIMULATOR_MODE env var (default: true for development)
+deployment_generator = DeploymentGenerator(simulator_mode=settings.simulator_mode)
 yaml_validator = YAMLValidator()
+logger.info(f"Deployment generator initialized with simulator_mode={settings.simulator_mode}")
 
 # Initialize cluster manager (will be None if cluster not accessible)
 try:
-    cluster_manager = KubernetesClusterManager(namespace="default")
-    logger.info("Kubernetes cluster manager initialized successfully")
+    cluster_manager = KubernetesClusterManager(namespace=settings.k8s_namespace)
+    logger.info(f"Kubernetes cluster manager initialized (namespace: {settings.k8s_namespace})")
 except KubernetesDeploymentError as e:
     logger.warning(f"Kubernetes cluster not accessible: {e}")
     cluster_manager = None

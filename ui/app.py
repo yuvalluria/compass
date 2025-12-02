@@ -5,10 +5,14 @@ This module provides the main Streamlit interface for Compass, featuring:
 2. Recommendation display with all specification details
 3. Editable specification component for user review/modification
 4. Integration with FastAPI backend
+
+Environment Variables:
+    API_BASE_URL: Backend API URL (default: http://localhost:8000)
 """
 
 import contextlib
 import json
+import os
 import time
 from pathlib import Path
 from typing import Any
@@ -16,8 +20,9 @@ from typing import Any
 import requests
 import streamlit as st
 
-# Configuration
-API_BASE_URL = "http://localhost:8000"
+# Configuration from environment variables
+# In production, set API_BASE_URL to your backend service URL
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 # Load research-based SLO/Workload config
 def load_usecase_slo_workload():
