@@ -1,0 +1,178 @@
+version: '3.8'
+
+# =============================================================================
+# Compass - Full Stack Deployment
+# =============================================================================
+# 
+# Services:
+#   - compass-api: FastAPI backend
+#   - compass-ui: Streamlit frontend
+#   - ollama: LLM inference server
+#   - redis: Caching (optional, for production)
+#
+# Usage:
+#   Development:  docker-compose up
+#   Production:   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+#
+# =============================================================================
+
+services:
+  # ===========================================================================
+  # Compass API (Backend)
+  # ===========================================================================
+  compass-api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: compass-api
+    ports:
+      - "8000:8000"
+    environment:
+      # LLM Configuration
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=qwen2.5:7b  # Winner of 7-model evaluation (91.6% accuracy)
+      
+      # API Configuration
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - CORS_ORIGINS=http://localhost:8501,http://compass-ui:8501
+      
+      # Database (optional - uses JSON fallback if not available)
+      - DATABASE_URL=postgresql://postgres:compass@postgres:5432/compass
+      
+      # Mode
+      - SIMULATOR_MODE=true
+      - COMPASS_DEBUG=false
+      
+      # Redis Cache (optional)
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      ollama:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/extract/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - compass-network
+
+  # ===========================================================================
+  # Compass UI (Frontend)
+  # ===========================================================================
+  compass-ui:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ui
+    container_name: compass-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://compass-api:8000
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    depends_on:
+      compass-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - compass-network
+
+  # ===========================================================================
+  # Ollama (LLM Inference)
+  # ===========================================================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: compass-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - compass-network
+    # Uncomment for GPU support (NVIDIA)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  # ===========================================================================
+  # Redis (Caching - Optional)
+  # ===========================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: compass-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - compass-network
+
+  # ===========================================================================
+  # PostgreSQL (Optional - for benchmark storage)
+  # ===========================================================================
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: compass-postgres
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=compass
+  #     - POSTGRES_DB=compass
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   restart: unless-stopped
+  #   networks:
+  #     - compass-network
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  compass-network:
+    driver: bridge
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  ollama_models:
+    name: compass_ollama_models
+  redis_data:
+    name: compass_redis_data
+  # postgres_data:
+  #   name: compass_postgres_data
+

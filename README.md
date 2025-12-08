@@ -89,10 +89,9 @@ Compass outputs:
 ## 📁 Project Structure
 
 ```
-compass/
-├── backend/
+├── backend/                        # FastAPI Backend
 │   └── src/
-│       ├── api/                    # FastAPI endpoints
+│       ├── api/                    # REST endpoints & production utilities
 │       ├── context_intent/         # Intent extraction & traffic profiling
 │       ├── knowledge_base/         # Benchmarks, SLO templates
 │       ├── recommendation/         # Model scoring & capacity planning
@@ -101,33 +100,27 @@ compass/
 │       ├── deployment/             # YAML generation & Kubernetes
 │       └── llm/                    # Ollama LLM client
 │
-├── data/
-│   ├── research/
-│   │   ├── slo_ranges.json         # Research-backed SLO lookup table
-│   │   └── workload_patterns.json  # Workload distribution patterns
-│   │
-│   ├── benchmarks/
-│   │   ├── models/                 # 204 opensource model benchmarks
-│   │   └── hardware/               # GPU costs, inference engines
-│   │
-│   ├── business_context/
-│   │   ├── use_case/               # 9 use cases with weighted scores
-│   │   │   ├── configs/            # all_usecases_config.json
-│   │   │   └── weighted_scores/    # Per use-case model rankings
-│   │   └── subject_specific/       # Subject-specific rankings
-│   │
-│   ├── slo_templates.json          # Use case SLO templates
-│   ├── model_catalog.json          # Model definitions
-│   └── hardware_costs.csv          # GPU pricing
+├── ui/                             # Streamlit Frontend
+│   └── app.py
 │
-├── ui/
-│   └── app.py                      # Streamlit UI
+├── data/                           # Configuration & Research Data
+│   ├── research/                   # SLO ranges, workload patterns
+│   ├── benchmarks/                 # Model benchmarks (204 models)
+│   ├── business_context/           # Use case configs & model scores
+│   └── slo_templates.json          # Use case SLO templates
 │
+├── evaluation/                     # LLM Evaluation Framework
+│   ├── datasets/                   # 400-case unified evaluation dataset
+│   ├── scripts/                    # Evaluation & visualization scripts
+│   ├── results/                    # Evaluation results & presentations
+│   ├── SCORING_METHODOLOGY.md      # How scoring works
+│   └── DATASET_DOCUMENTATION.md    # Dataset explanation
+│
+├── sanity_tests/                   # API sanity tests
+├── tests/                          # Unit & integration tests
 ├── simulator/                      # vLLM GPU-free simulator
-├── scripts/                        # Utility scripts
-├── tests/                          # Test suites
+├── docker/                         # Dockerfiles
 ├── docs/                           # Documentation
-├── config/                         # Configuration files
 ├── Makefile                        # Build & run commands
 ├── requirements.txt                # Python dependencies
 └── README.md                       # This file
@@ -171,7 +164,7 @@ pip install -r requirements.txt
 
 # Start Ollama
 ollama serve
-ollama pull llama3.1:8b
+ollama pull qwen2.5:7b
 
 # Run Backend
 python -m uvicorn backend.src.api.routes:app --host 0.0.0.0 --port 8000
@@ -202,7 +195,7 @@ Configuration is managed via environment variables. Create a `.env` file in the 
 | `CORS_ORIGINS` | Allowed origins (comma-separated) | `http://localhost:8501` | **Production** |
 | `API_BASE_URL` | Backend API URL (for UI) | `http://localhost:8000` | No |
 | `OLLAMA_HOST` | Ollama server URL | `http://localhost:11434` | No |
-| `OLLAMA_MODEL` | LLM model name | `llama3.1:8b` | No |
+| `OLLAMA_MODEL` | LLM model name | `qwen2.5:7b` | No |
 | `SIMULATOR_MODE` | Use GPU simulator | `true` | No |
 | `K8S_NAMESPACE` | Kubernetes namespace | `default` | No |
 | `COMPASS_DEBUG` | Enable debug logging | `false` | No |
@@ -414,9 +407,8 @@ See [docs/DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md#vllm-simulator-details) fo
 |-----------|-----------|
 | Backend | FastAPI, Pydantic |
 | Frontend | Streamlit |
-| LLM | Ollama (llama3.1:8b) |
+| LLM | Ollama (qwen2.5:7b) - 91.6% accuracy on 400-case evaluation |
 | Data | PostgreSQL, psycopg2, pandas |
-| ML/Embeddings | sentence-transformers, scikit-learn |
 | YAML Generation | Jinja2 templates |
 | Kubernetes | KIND (local), KServe v0.13.0 |
 | Deployment | kubectl, Kubernetes Python client |

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Traffic profile generation from deployment intent."""
 
 import logging

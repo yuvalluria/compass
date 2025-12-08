@@ -21,7 +21,9 @@ These methods are kept for potential Phase 2 API endpoints, debugging, interacti
 testing, or future UI features that may need to display available options.
 """
 
+import json
 import logging
+from pathlib import Path
 from typing import Optional
 
 import psycopg2
@@ -30,6 +32,9 @@ from psycopg2.extras import RealDictCursor
 from ..config import settings
 
 logger = logging.getLogger(__name__)
+
+# Path to fallback JSON benchmarks
+BENCHMARK_JSON_PATH = Path(__file__).parent.parent.parent.parent / "data" / "benchmarks" / "benchmarks_synthetic.json"
 
 
 class BenchmarkData:
@@ -127,18 +132,37 @@ class BenchmarkRepository:
                 "Set DATABASE_URL environment variable for production."
             )
         
-        self._test_connection()
+        self.db_available = self._test_connection()
+        self._json_benchmarks = None  # Lazy-loaded JSON fallback
 
-    def _test_connection(self):
-        """Test database connection on initialization."""
+    def _load_json_benchmarks(self) -> list[dict]:
+        """Load benchmarks from JSON file (fallback when DB unavailable)."""
+        if self._json_benchmarks is None:
+            try:
+                with open(BENCHMARK_JSON_PATH, "r") as f:
+                    data = json.load(f)
+                    self._json_benchmarks = data.get("benchmarks", [])
+                    logger.info(f"Loaded {len(self._json_benchmarks)} benchmarks from JSON fallback")
+            except Exception as e:
+                logger.error(f"Failed to load JSON benchmarks: {e}")
+                self._json_benchmarks = []
+        return self._json_benchmarks
+
+    def _test_connection(self) -> bool:
+        """Test database connection on initialization.
+        
+        Returns:
+            True if connection successful, False otherwise
+        """
         try:
             conn = self._get_connection()
             conn.close()
             logger.info("Successfully connected to PostgreSQL benchmark database")
+            return True
         except Exception as e:
-            logger.error(f"Failed to connect to PostgreSQL: {e}")
-            logger.error(f"Database URL: {self.database_url}")
-            raise
+            logger.warning(f"PostgreSQL not available: {e}")
+            logger.warning("Running in fallback mode - using synthetic benchmarks from JSON")
+            return False
 
     def _get_connection(self):
         """Get a database connection."""
@@ -321,6 +345,14 @@ class BenchmarkRepository:
         Returns:
             List of benchmarks meeting all criteria (one per system configuration)
         """
+        # Use JSON fallback if database is not available
+        if not self.db_available:
+            return self._find_configurations_from_json(
+                prompt_tokens, output_tokens,
+                ttft_p95_max_ms, itl_p95_max_ms, e2e_p95_max_ms,
+                min_qps
+            )
+        
         # Use window function to rank benchmarks by requests_per_second within each
         # system configuration, then select only the highest QPS that meets SLO.
         # When multiple benchmarks exist at the same QPS, prefer the one with lowest E2E latency.
@@ -366,6 +398,51 @@ class BenchmarkRepository:
             return [BenchmarkData(dict(row)) for row in rows]
         finally:
             conn.close()
+
+    def _find_configurations_from_json(
+        self,
+        prompt_tokens: int,
+        output_tokens: int,
+        ttft_p95_max_ms: int,
+        itl_p95_max_ms: int,
+        e2e_p95_max_ms: int,
+        min_qps: float = 0
+    ) -> list[BenchmarkData]:
+        """Fallback: Find configurations from JSON benchmarks."""
+        benchmarks = self._load_json_benchmarks()
+        
+        # Filter benchmarks that meet SLO criteria
+        matching = []
+        for b in benchmarks:
+            # Match prompt/output tokens (allow some tolerance)
+            if abs(b.get("prompt_tokens", 0) - prompt_tokens) > prompt_tokens * 0.3:
+                continue
+            if abs(b.get("output_tokens", 0) - output_tokens) > output_tokens * 0.3:
+                continue
+            
+            # Check SLO criteria
+            if b.get("ttft_p95", float("inf")) > ttft_p95_max_ms:
+                continue
+            if b.get("itl_p95", float("inf")) > itl_p95_max_ms:
+                continue
+            if b.get("e2e_p95", float("inf")) > e2e_p95_max_ms:
+                continue
+            if b.get("requests_per_second", 0) < min_qps:
+                continue
+            
+            matching.append(b)
+        
+        # Group by (model, hardware, hardware_count) and select best QPS
+        best_by_config = {}
+        for b in matching:
+            key = (b["model_hf_repo"], b["hardware"], b["hardware_count"])
+            if key not in best_by_config:
+                best_by_config[key] = b
+            elif b.get("requests_per_second", 0) > best_by_config[key].get("requests_per_second", 0):
+                best_by_config[key] = b
+        
+        logger.info(f"JSON fallback: Found {len(best_by_config)} configurations meeting SLO")
+        return [BenchmarkData(b) for b in best_by_config.values()]
 
     def get_available_models(self) -> list[str]:
         """Get list of all available models in the database."""

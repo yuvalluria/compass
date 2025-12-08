@@ -1,3 +1,4 @@
+from __future__ import annotations
 """YAML validation module for generated deployment configurations."""
 
 import logging

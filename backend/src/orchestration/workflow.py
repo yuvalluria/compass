@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Workflow orchestration for end-to-end recommendation flow."""
 
 import logging

@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     
     # Ollama LLM
     ollama_host: str = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-    ollama_model: str = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
+    ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")  # Winner of 7-model evaluation (91.6% accuracy)
     
     # Debug mode
     debug: bool = os.getenv("COMPASS_DEBUG", "false").lower() == "true"
@@ -99,6 +99,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"  # Ignore extra env vars not defined in model
 
 
 @lru_cache()

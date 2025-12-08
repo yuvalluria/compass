@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Intent extraction from conversational input."""
 
 import logging

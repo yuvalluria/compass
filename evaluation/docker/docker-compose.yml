@@ -1,0 +1,39 @@
+# Docker Compose for LLM Evaluation
+# Models run in containers - easy cleanup when done!
+#
+# Usage:
+#   docker compose up -d                    # Start Ollama server
+#   docker compose exec ollama ollama pull llama3.1:8b  # Pull a model
+#   docker compose down -v                  # Stop and remove volumes (cleanup!)
+#
+# Cleanup all models:
+#   docker compose down -v && docker volume rm compass_ollama_models
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: compass-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    # For Apple Silicon (M4)
+    platform: linux/arm64
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ollama_data:
+    name: compass_ollama_models
+    # This volume stores all models - delete it to free space
+

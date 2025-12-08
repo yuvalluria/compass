@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Capacity planning and GPU configuration recommendation.
 
 IMPORTANT: PostgreSQL Migration (Phase 1):

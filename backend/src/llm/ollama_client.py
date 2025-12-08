@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Ollama client wrapper for LLM interactions.
 
 Environment Variables:

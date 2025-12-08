@@ -678,8 +678,8 @@ def render_overview_tab(rec: dict[str, Any]):
             }
             if intent.get("priority"):
                 task_json["priority"] = intent["priority"]
-            if intent.get("hardware_constraint"):
-                task_json["hardware"] = intent["hardware_constraint"]
+            if intent.get("hardware_preference"):
+                task_json["hardware"] = intent["hardware_preference"]
             if intent.get("domain_specialization") and intent["domain_specialization"] != ["general"]:
                 task_json["domain"] = intent["domain_specialization"]
             st.json(task_json)
@@ -1241,8 +1241,8 @@ def render_specifications_tab(rec: dict[str, Any]):
         # Add optional fields only if present
         if intent.get("priority"):
             task_json["priority"] = intent["priority"]
-        if intent.get("hardware_constraint"):
-            task_json["hardware"] = intent["hardware_constraint"]
+        if intent.get("hardware_preference"):
+            task_json["hardware"] = intent["hardware_preference"]
         if intent.get("domain_specialization") and intent["domain_specialization"] != ["general"]:
             task_json["domain"] = intent["domain_specialization"]
 

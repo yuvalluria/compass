@@ -75,7 +75,7 @@ Compass is structured as a layered architecture:
 
 **Core Engines** (Vertical - Backend Services):
 1. **Intent & Specification Engine** - Transform conversation into complete deployment spec
-   - LLM-powered intent extraction (Ollama llama3.1:8b)
+   - LLM-powered intent extraction (Ollama qwen2.5:7b)
    - Use case → traffic profile mapping (4 GuideLLM standards)
    - SLO template lookup and specification generation
 2. **Recommendation Engine** - Find optimal model + GPU configurations

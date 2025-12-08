@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Quality scores loader for model benchmarks.
 
 Loads model quality benchmarks from model_quality_benchmarks.csv and provides

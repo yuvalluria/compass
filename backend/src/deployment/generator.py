@@ -1,3 +1,4 @@
+from __future__ import annotations
 """YAML Generation Module for KServe/vLLM Deployments.
 
 This module generates production-ready Kubernetes YAML configurations for

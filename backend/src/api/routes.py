@@ -1,9 +1,10 @@
+from __future__ import annotations
 """FastAPI routes for the Compass API."""
 
 import logging
 from datetime import datetime
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -15,6 +16,10 @@ from ..deployment.validator import ValidationError, YAMLValidator
 from ..knowledge_base.model_catalog import ModelCatalog
 from ..knowledge_base.slo_templates import SLOTemplateRepository
 from ..orchestration.workflow import RecommendationWorkflow
+
+# Production utilities
+from .production import RequestTracingMiddleware, sanitize_input, check_rate_limit
+from .extraction_routes import router as extraction_router
 
 # Configure logging from settings
 log_level = logging.DEBUG if settings.debug else logging.INFO
@@ -33,8 +38,14 @@ for warning in config_warnings:
 
 # Create FastAPI app
 app = FastAPI(
-    title="Compass API", description="API for LLM deployment recommendations", version="0.1.0"
+    title="Compass API", 
+    description="API for LLM deployment recommendations and business context extraction", 
+    version="0.2.0"
 )
+
+# Add production middleware
+app.add_middleware(RequestTracingMiddleware)
+logger.info("Request tracing middleware enabled")
 
 # Add CORS middleware with configurable origins
 # In production, set CORS_ORIGINS environment variable to specific domains
@@ -46,6 +57,10 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+# Include extraction routes (production-ready business context extraction)
+app.include_router(extraction_router)
+logger.info("Extraction routes registered at /api/v1/extract")
 
 # Initialize workflow (singleton for POC)
 workflow = RecommendationWorkflow()

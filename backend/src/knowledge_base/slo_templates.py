@@ -1,3 +1,4 @@
+from __future__ import annotations
 """Data access layer for use case SLO templates."""
 
 import json
