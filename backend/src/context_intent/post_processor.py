@@ -170,22 +170,67 @@ HARDWARE_ALIASES = {
 # =============================================================================
 
 USE_CASE_KEYWORDS = {
-    "chatbot_conversational": ["chatbot", "chat", "support", "customer", "assistant", "bot", "q&a", "qa"],
-    "code_completion": ["code completion", "autocomplete", "ide", "inline", "copilot", "coding"],
-    "code_generation_detailed": ["generate code", "code generation", "write code", "create function"],
-    "translation": ["translate", "translation", "language", "multilingual", "localize"],
-    "content_generation": ["content", "marketing", "blog", "copy", "article", "write"],
-    "summarization_short": ["summarize", "summary", "tldr", "brief", "digest"],
-    "document_analysis_rag": ["rag", "document", "knowledge base", "search", "retrieval"],
-    "long_document_summarization": ["long document", "report summary", "paper summary"],
-    "research_legal_analysis": ["legal", "contract", "research", "compliance", "law"],
+    "chatbot_conversational": [
+        "chatbot", "chat bot", "chat", "support", "customer service", "assistant", 
+        "bot", "q&a", "qa", "faq", "helpdesk", "help desk", "virtual assistant",
+        "conversational", "customer support", "support agent"
+    ],
+    "code_completion": [
+        "code completion", "autocomplete", "auto complete", "ide", "inline", "copilot",
+        "coding assistant", "code assistant", "syntax", "code help", "coding help",
+        "code suggestions", "tab completion"
+    ],
+    "code_generation_detailed": [
+        "generate code", "code generation", "write code", "create function", "code gen",
+        "full code", "detailed code", "code with documentation", "create code"
+    ],
+    "translation": [
+        "translate", "translation", "language", "multilingual", "localize", "localization",
+        "translator", "language translation", "translate documents"
+    ],
+    "content_generation": [
+        "content", "marketing", "blog", "copy", "article", "writing assistant",
+        "content creation", "copywriting", "marketing copy", "creative writing",
+        "social media", "email draft", "newsletter"
+    ],
+    "summarization_short": [
+        "summarize", "summary", "tldr", "brief", "digest", "condense", "short summary",
+        "quick summary", "summarization", "news summary", "article summary"
+    ],
+    "document_analysis_rag": [
+        "rag", "document q&a", "knowledge base", "search", "retrieval", "document analysis",
+        "semantic search", "document search", "knowledge management", "doc qa"
+    ],
+    "long_document_summarization": [
+        "long document", "report summary", "paper summary", "lengthy", "extensive document",
+        "book summary", "long report", "quarterly report", "annual report", "50+ pages"
+    ],
+    "research_legal_analysis": [
+        "legal", "contract", "research", "compliance", "law", "attorney", "lawyer",
+        "patent", "academic", "research paper", "case law", "regulatory", "legal document"
+    ],
 }
 
 PRIORITY_KEYWORDS = {
-    "low_latency": ["fast", "quick", "instant", "real-time", "latency", "speed", "responsive"],
-    "cost_saving": ["budget", "cheap", "cost", "affordable", "economical", "save money"],
-    "high_throughput": ["batch", "throughput", "scale", "volume", "many requests", "high load"],
-    "high_quality": ["accuracy", "quality", "precise", "accurate", "no hallucination", "correct"],
+    "low_latency": [
+        "fast", "quick", "instant", "real-time", "realtime", "latency", "speed", "responsive",
+        "sub-second", "millisecond", "snappy", "low latency", "latency is", "response time",
+        "blazing", "lightning", "immediate", "rapid"
+    ],
+    "cost_saving": [
+        "budget", "cheap", "cost", "affordable", "economical", "save money", "minimize cost",
+        "tight budget", "cost-effective", "low cost", "cost saving", "cost is", "expenses",
+        "inexpensive", "on a budget", "budget tight", "budget is"
+    ],
+    "high_throughput": [
+        "batch", "throughput", "scale", "volume", "many requests", "high load", "bulk",
+        "massive", "high volume", "large scale", "concurrent", "parallel", "maximum throughput"
+    ],
+    "high_quality": [
+        "accuracy", "quality", "precise", "accurate", "no hallucination", "correct",
+        "precision", "meticulous", "careful", "quality is", "accuracy is", "must be accurate",
+        "no errors", "error-free", "critical accuracy", "paramount"
+    ],
 }
 
 

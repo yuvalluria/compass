@@ -1,139 +1,150 @@
 """Prompt templates for LLM interactions."""
 
 # =============================================================================
-# FEW-SHOT EXAMPLES FOR IMPROVED ACCURACY
+# FEW-SHOT EXAMPLES FOR IMPROVED ACCURACY (v2 - Expanded)
 # =============================================================================
 # These examples help the LLM understand the exact output format expected.
-# Adding 3-5 examples typically improves accuracy by 2-5%.
+# 10 diverse examples covering edge cases for better accuracy.
 
 FEW_SHOT_EXAMPLES = """
-### Example 1: Basic chatbot request
+### Example 1: Basic chatbot
 Input: "chatbot for 500 users"
-Output: {"use_case": "chatbot_conversational", "user_count": 500, "experience_class": "conversational", "latency_requirement": "high", "priority": null, "hardware_preference": null}
+Output: {"use_case": "chatbot_conversational", "user_count": 500, "priority": null, "hardware_preference": null}
 
-### Example 2: Code completion with priority
+### Example 2: Code completion with speed priority
 Input: "code completion for 300 developers, need fast response"
-Output: {"use_case": "code_completion", "user_count": 300, "experience_class": "instant", "latency_requirement": "very_high", "priority": "low_latency", "hardware_preference": null}
+Output: {"use_case": "code_completion", "user_count": 300, "priority": "low_latency", "hardware_preference": null}
 
-### Example 3: RAG with hardware preference
-Input: "RAG system for 200 users on H100 GPUs, latency is key"
-Output: {"use_case": "document_analysis_rag", "user_count": 200, "experience_class": "interactive", "latency_requirement": "very_high", "priority": "low_latency", "hardware_preference": "H100"}
+### Example 3: RAG system (document Q&A)
+Input: "RAG system for 200 users on H100 GPUs"
+Output: {"use_case": "document_analysis_rag", "user_count": 200, "priority": null, "hardware_preference": "H100"}
 
 ### Example 4: Summarization with cost priority
 Input: "summarization for 1000 users, budget is tight"
-Output: {"use_case": "summarization_short", "user_count": 1000, "experience_class": "interactive", "latency_requirement": "medium", "priority": "cost_saving", "hardware_preference": null}
+Output: {"use_case": "summarization_short", "user_count": 1000, "priority": "cost_saving", "hardware_preference": null}
 
-### Example 5: Translation with quality focus
+### Example 5: Translation with quality priority
 Input: "translation service for legal documents, 50 lawyers, accuracy is critical"
-Output: {"use_case": "translation", "user_count": 50, "experience_class": "deferred", "latency_requirement": "medium", "priority": "high_quality", "hardware_preference": null}
+Output: {"use_case": "translation", "user_count": 50, "priority": "high_quality", "hardware_preference": null}
+
+### Example 6: Code generation (detailed, with docs)
+Input: "code generation with documentation for 100 engineers"
+Output: {"use_case": "code_generation_detailed", "user_count": 100, "priority": null, "hardware_preference": null}
+
+### Example 7: Content generation for marketing
+Input: "content creation tool for 200 marketers"
+Output: {"use_case": "content_generation", "user_count": 200, "priority": null, "hardware_preference": null}
+
+### Example 8: Long document summarization
+Input: "summarize long reports for 80 analysts, documents are 50+ pages"
+Output: {"use_case": "long_document_summarization", "user_count": 80, "priority": null, "hardware_preference": null}
+
+### Example 9: Legal/research analysis
+Input: "legal document analysis for 40 attorneys"
+Output: {"use_case": "research_legal_analysis", "user_count": 40, "priority": null, "hardware_preference": null}
+
+### Example 10: High throughput batch processing
+Input: "translation batch job for 3000 documents, high volume"
+Output: {"use_case": "translation", "user_count": 3000, "priority": "high_throughput", "hardware_preference": null}
 """
 
 INTENT_EXTRACTION_SCHEMA = """
-Expected JSON schema:
+## EXACT USE CASE MAPPING (choose ONE):
+
+| Use Case | When to Use | Keywords |
+|----------|-------------|----------|
+| chatbot_conversational | Interactive chat, Q&A bots, customer support | chatbot, bot, assistant, Q&A, support, help desk |
+| code_completion | IDE autocomplete, short code suggestions | autocomplete, completion, copilot, suggestions |
+| code_generation_detailed | Full code with docs/tests | code generation, generate code, write code |
+| translation | Language translation | translate, translation, multilingual, localization |
+| content_generation | Marketing, blog, creative writing | content, marketing, blog, writing, copy |
+| summarization_short | Brief summaries (<10 pages input) | summarize, summary, condense, brief |
+| document_analysis_rag | Document Q&A with retrieval | RAG, document Q&A, knowledge base, search |
+| long_document_summarization | Long docs (10+ pages) | long document, lengthy, extensive, reports |
+| research_legal_analysis | Legal/academic analysis | legal, research, academic, contract, compliance |
+
+## PRIORITY DETECTION (choose ONE or null):
+
+| Priority | Keywords to Look For |
+|----------|---------------------|
+| low_latency | fast, quick, instant, real-time, speed, latency, sub-second, millisecond, snappy, responsive |
+| cost_saving | budget, cheap, cost, affordable, economical, minimize cost, tight budget, save money |
+| high_throughput | batch, volume, scale, throughput, bulk, many requests, high volume, massive |
+| high_quality | accuracy, precise, quality, correct, no errors, meticulous, careful, precision |
+| balanced | balance, standard, moderate, general purpose |
+| null | No priority mentioned - DEFAULT TO NULL |
+
+## HARDWARE DETECTION:
+Extract GPU type EXACTLY as mentioned: H100, H200, A100, A10G, L4, T4, V100, A10
+If no GPU mentioned → hardware_preference: null
+
+## OUTPUT FORMAT:
 {
-  "use_case": "chatbot_conversational|code_completion|code_generation_detailed|translation|content_generation|summarization_short|document_analysis_rag|long_document_summarization|research_legal_analysis",
-  "experience_class": "instant|conversational|interactive|deferred|batch",
+  "use_case": "<one of the 9 use cases above>",
   "user_count": <integer>,
-  "latency_requirement": "very_high|high|medium|low",
-  "throughput_priority": "very_high|high|medium|low",
-  "budget_constraint": "strict|moderate|flexible|none",
-  "priority": "low_latency|cost_saving|high_throughput|high_quality|balanced|null",
-  "hardware_preference": "<GPU type if mentioned: H100, H200, A100, A10G, L4, T4, V100, A10, or null>",
-  "domain_specialization": ["general"|"code"|"multilingual"|"enterprise"],
-  "additional_context": "<any other relevant details mentioned>"
+  "priority": "<low_latency|cost_saving|high_throughput|high_quality|balanced|null>",
+  "hardware_preference": "<GPU type or null>"
 }
-
-Use case descriptions:
-- chatbot_conversational: Real-time conversational chatbots (short prompts, short responses)
-- code_completion: Fast code completion/autocomplete (short prompts, short completions)
-- code_generation_detailed: Detailed code generation with explanations (medium prompts, long responses)
-- translation: Document translation (medium prompts, medium responses)
-- content_generation: Content creation, marketing copy (medium prompts, medium responses)
-- summarization_short: Short document summarization (medium prompts, short summaries)
-- document_analysis_rag: RAG-based document Q&A (long prompts with context, medium responses)
-- long_document_summarization: Long document summarization (very long prompts, medium summaries)
-- research_legal_analysis: Research/legal document analysis (very long prompts, detailed analysis)
-
-Priority detection keywords:
-- low_latency: "fast", "quick", "instant", "real-time", "latency is key", "speed matters"
-- cost_saving: "budget", "cheap", "cost-effective", "affordable", "minimize cost"
-- high_throughput: "batch", "high volume", "scale", "throughput", "many requests"
-- high_quality: "accuracy", "precise", "quality matters", "no hallucinations", "accurate"
-- balanced: "balance", "standard", "moderate" (or nothing mentioned)
-
-Experience class guidance:
-- instant: Extremely low latency required (<200ms TTFT) - code completion, autocomplete
-- conversational: Real-time user interaction (chatbots, interactive tools) - low latency needed
-- interactive: User waiting but can tolerate slight delay (RAG Q&A, content generation) - balanced
-- deferred: User can wait for quality (long summarization, detailed analysis) - quality over speed
-- batch: Background/async processing (research, legal analysis) - optimize for quality and cost
 """
 
 
 def build_intent_extraction_prompt(user_message: str, conversation_history: list = None, use_few_shot: bool = True) -> str:
     """
     Build prompt for extracting deployment intent from user conversation.
-
-    Args:
-        user_message: Latest user message
-        conversation_history: Optional list of previous messages
-        use_few_shot: Whether to include few-shot examples (improves accuracy by ~3%)
-
-    Returns:
-        Formatted prompt string
     """
     context = ""
     if conversation_history:
         context = "Previous conversation:\n"
-        for msg in conversation_history[-3:]:  # Last 3 messages for context
+        for msg in conversation_history[-3:]:
             role = msg.get("role", "user")
             content = msg.get("content", "")
             context += f"{role}: {content}\n"
         context += "\n"
 
-    # Include few-shot examples for improved accuracy
     few_shot_section = ""
     if use_few_shot:
         few_shot_section = f"""
-## Examples (follow this exact format):
+## EXAMPLES (follow this EXACT format):
 {FEW_SHOT_EXAMPLES}
 """
 
-    prompt = f"""You are an expert AI assistant for Compass helping users deploy Large Language Models (LLMs) for production use cases.
+    prompt = f"""You are extracting structured deployment requirements from user requests.
 
-{context}Current user message: {user_message}
+{context}User message: "{user_message}"
 
-Your task is to extract structured information about their deployment requirements. Analyze what they've said and infer:
+CRITICAL RULES:
+1. ALWAYS output valid JSON
+2. use_case MUST be one of: chatbot_conversational, code_completion, code_generation_detailed, translation, content_generation, summarization_short, document_analysis_rag, long_document_summarization, research_legal_analysis
+3. priority MUST be one of: low_latency, cost_saving, high_throughput, high_quality, balanced, or null
+4. user_count MUST be an integer (estimate if vague: "thousands"→5000, "small team"→20)
+5. hardware_preference: extract GPU type (H100, A100, L4, T4, etc.) or null
 
-1. **Use case**: What type of application (chatbot, customer service, code generation, summarization, etc.)
-2. **User count**: How many users or scale mentioned (extract the NUMBER, estimate if not explicit)
-3. **Priority**: User's main concern - detect from keywords:
-   - "fast", "quick", "latency" → priority: "low_latency"
-   - "cheap", "budget", "cost" → priority: "cost_saving"
-   - "accuracy", "quality", "precise" → priority: "high_quality"
-   - "batch", "throughput", "scale" → priority: "high_throughput"
-   - If not mentioned → priority: null
-4. **Hardware preference**: Did they mention specific GPU types? (H100, A100, L4, etc.)
-5. **Latency requirement**: How important is low latency? (very_high/high/medium/low)
-6. **Budget constraint**: How price-sensitive are they?
-7. **Domain specialization**: Any specific domains mentioned (code, multilingual, enterprise, etc.)
+USE CASE DISAMBIGUATION:
+- "chatbot", "bot", "assistant", "support" → chatbot_conversational
+- "autocomplete", "completion", "copilot" → code_completion  
+- "code generation", "generate code", "write code" → code_generation_detailed
+- "translate", "translation" → translation
+- "content", "marketing", "blog" → content_generation
+- "summarize", "summary" (short docs) → summarization_short
+- "RAG", "document Q&A", "knowledge base" → document_analysis_rag
+- "long document", "lengthy report" → long_document_summarization
+- "legal", "research", "academic", "contract" → research_legal_analysis
+
+PRIORITY DETECTION:
+- "fast", "quick", "latency", "speed", "instant" → low_latency
+- "budget", "cheap", "cost", "affordable" → cost_saving
+- "batch", "volume", "throughput", "bulk" → high_throughput
+- "accuracy", "quality", "precise", "correct" → high_quality
+- "balanced", "standard" → balanced
+- Nothing mentioned → null
 
 {few_shot_section}
 
-Be intelligent about inference:
-- "thousands of users" → estimate specific number (e.g., 5000)
-- "5k users" → user_count: 5000
-- "needs to be fast" or "low latency critical" → priority: "low_latency", latency_requirement: "very_high"
-- "budget is tight" or "cost is key" → priority: "cost_saving"
-- "accuracy is critical" → priority: "high_quality"
-- "on H100" or "using A100" → hardware_preference: "H100" or "A100"
-- No hardware mentioned → hardware_preference: null
-
 {INTENT_EXTRACTION_SCHEMA}
 
-Now extract from the user message above. Output ONLY the JSON object:"""
+Extract from: "{user_message}"
+Output ONLY the JSON:"""
     return prompt
 
 
-# NOTE: Experimental prompts for future conversational features have been
-# moved to prompts_experimental.py to keep this file focused on production code.
+# NOTE: Experimental prompts moved to prompts_experimental.py

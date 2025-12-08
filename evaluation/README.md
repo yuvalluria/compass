@@ -4,25 +4,25 @@ Comprehensive evaluation framework for comparing LLMs on the Compass business co
 
 ## 📊 Latest Results (December 2024)
 
-### Winner: **Qwen 2.5 7B** (with improvements)
+### Winner: **Qwen 2.5 7B** (with Few-Shot + Post-Processing)
 
 | Metric | Score |
 |--------|-------|
-| **Weighted Score** | **92.5%** |
-| Use Case Accuracy | 90.2% |
-| User Count Accuracy | 95.7% |
-| Priority Detection | 84.3% |
-| Hardware Detection | 99.3% |
+| **Weighted Score** | **95.1%** |
+| Use Case Accuracy | 93.3% |
+| User Count Accuracy | 95.8% |
+| Priority Detection | 95.7% |
+| Hardware Detection | 99.7% |
 | JSON Validity | 100% |
-| Avg Latency | 1409ms |
+| Avg Latency | 914ms |
 
 ### Top 3 Models Compared (600 test cases)
 
 | Rank | Model | Score | Use Case | User Count | Priority | Hardware | JSON | Latency |
 |------|-------|-------|----------|------------|----------|----------|------|---------|
-| 🥇 | **Qwen 2.5 7B** | **92.5%** | 90.2% | 95.7% | 84.3% | 99.3% | 100% | 1409ms |
-| 🥈 | Mistral 7B | 87.3% | 86.0% | 92.5% | 70.8% | 98.3% | 100% | 1893ms |
-| 🥉 | Llama 3.1 8B | 86.5% | 86.5% | 92.7% | 35.7% | 97.0% | 98.8% | 2381ms |
+| 🥇 | **Qwen 2.5 7B** | **95.1%** | 93.3% | 95.8% | 95.7% | 99.7% | 100% | 914ms |
+| 🥈 | Mistral 7B | 90.7% | 88.2% | 91.8% | 91.2% | 97.7% | 99.8% | 1122ms |
+| 🥉 | Llama 3.1 8B | 88.1% | 83.8% | 92.8% | 70.2% | 97.8% | 99.3% | 1056ms |
 
 ---
 
