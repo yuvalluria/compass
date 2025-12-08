@@ -170,44 +170,56 @@ HARDWARE_ALIASES = {
 # =============================================================================
 
 USE_CASE_KEYWORDS = {
+    # CRITICAL: RAG keywords must be checked BEFORE chatbot (more specific)
+    "document_analysis_rag": [
+        "rag", "document q&a", "document qa", "knowledge base", "semantic search", 
+        "document search", "knowledge management", "doc qa", "retrieval",
+        "document intelligence", "document helper", "knowledge worker",
+        "internal wiki", "wiki q&a", "document question"
+    ],
+    # Long summarization keywords - ONLY explicit "long" indicators
+    # Do NOT include generic "document" - that would over-trigger
+    "long_document_summarization": [
+        "long document", "lengthy document", "lengthy report", "extensive document",
+        "book summary", "book chapter", "long report", "quarterly report", "annual report", 
+        "50+ pages", "100 pages", "50 pages", "condensation", "thesis",
+        "extensive report", "long doc", "lengthy"
+    ],
+    # Chatbot - only if NO document/RAG keywords present
     "chatbot_conversational": [
-        "chatbot", "chat bot", "chat", "support", "customer service", "assistant", 
-        "bot", "q&a", "qa", "faq", "helpdesk", "help desk", "virtual assistant",
-        "conversational", "customer support", "support agent"
+        "chatbot", "chat bot", "chat", "customer support", "assistant", 
+        "bot", "faq", "helpdesk", "help desk", "virtual assistant",
+        "conversational", "support agent", "customer service"
     ],
     "code_completion": [
         "code completion", "autocomplete", "auto complete", "ide", "inline", "copilot",
         "coding assistant", "code assistant", "syntax", "code help", "coding help",
-        "code suggestions", "tab completion"
+        "code suggestions", "tab completion", "intelligent coding"
     ],
     "code_generation_detailed": [
         "generate code", "code generation", "write code", "create function", "code gen",
         "full code", "detailed code", "code with documentation", "create code"
     ],
     "translation": [
-        "translate", "translation", "language", "multilingual", "localize", "localization",
-        "translator", "language translation", "translate documents"
+        "translate", "translation", "multilingual", "localize", "localization",
+        "translator", "language translation", "translate documents", "paraphras",
+        "paraphrasing", "language service"
     ],
     "content_generation": [
         "content", "marketing", "blog", "copy", "article", "writing assistant",
         "content creation", "copywriting", "marketing copy", "creative writing",
-        "social media", "email draft", "newsletter"
+        "social media", "email draft", "newsletter", "text generation"
     ],
+    # Short summarization - generic summarization without "long/report/book"
     "summarization_short": [
         "summarize", "summary", "tldr", "brief", "digest", "condense", "short summary",
-        "quick summary", "summarization", "news summary", "article summary"
-    ],
-    "document_analysis_rag": [
-        "rag", "document q&a", "knowledge base", "search", "retrieval", "document analysis",
-        "semantic search", "document search", "knowledge management", "doc qa"
-    ],
-    "long_document_summarization": [
-        "long document", "report summary", "paper summary", "lengthy", "extensive document",
-        "book summary", "long report", "quarterly report", "annual report", "50+ pages"
+        "quick summary", "summarization", "news summary", "article summary",
+        "executive summary"
     ],
     "research_legal_analysis": [
         "legal", "contract", "research", "compliance", "law", "attorney", "lawyer",
-        "patent", "academic", "research paper", "case law", "regulatory", "legal document"
+        "patent", "academic", "research paper", "case law", "regulatory", "legal document",
+        "multi-document analysis", "multi document"
     ],
 }
 
@@ -322,12 +334,32 @@ class PostProcessor:
         return self._infer_use_case(original_input) or "chatbot_conversational"
     
     def _infer_use_case(self, original_input: str) -> str:
-        """Infer use case from keywords in original input."""
-        for use_case, keywords in USE_CASE_KEYWORDS.items():
+        """Infer use case from keywords in original input.
+        
+        IMPORTANT: Check more specific use cases FIRST to avoid confusion:
+        - document_analysis_rag before chatbot (both answer questions)
+        - long_document_summarization before summarization_short
+        """
+        # Priority order: more specific use cases first
+        priority_order = [
+            "document_analysis_rag",      # Check before chatbot
+            "long_document_summarization", # Check before summarization_short
+            "research_legal_analysis",
+            "code_completion",
+            "code_generation_detailed",
+            "translation",
+            "content_generation",
+            "summarization_short",
+            "chatbot_conversational",     # Last - most generic
+        ]
+        
+        for use_case in priority_order:
+            keywords = USE_CASE_KEYWORDS.get(use_case, [])
             for keyword in keywords:
                 if keyword in original_input:
                     self.corrections_made.append(f"use_case: inferred '{use_case}' from '{keyword}'")
                     return use_case
+        
         return "chatbot_conversational"  # Default
     
     def _fix_user_count(self, value: Any, original_input: str) -> int:

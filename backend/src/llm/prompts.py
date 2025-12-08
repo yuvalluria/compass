@@ -7,45 +7,53 @@
 # 10 diverse examples covering edge cases for better accuracy.
 
 FEW_SHOT_EXAMPLES = """
-### Example 1: Basic chatbot
+### Example 1: Basic chatbot (conversational, no documents)
 Input: "chatbot for 500 users"
 Output: {"use_case": "chatbot_conversational", "user_count": 500, "priority": null, "hardware_preference": null}
 
-### Example 2: Code completion with speed priority
-Input: "code completion for 300 developers, need fast response"
-Output: {"use_case": "code_completion", "user_count": 300, "priority": "low_latency", "hardware_preference": null}
-
-### Example 3: RAG system (document Q&A)
+### Example 2: RAG system (document Q&A, knowledge base, retrieval)
 Input: "RAG system for 200 users on H100 GPUs"
 Output: {"use_case": "document_analysis_rag", "user_count": 200, "priority": null, "hardware_preference": "H100"}
 
-### Example 4: Summarization with cost priority
+### Example 3: Document Q&A (NOT chatbot - has documents/knowledge base)
+Input: "document Q&A for 600 users"
+Output: {"use_case": "document_analysis_rag", "user_count": 600, "priority": null, "hardware_preference": null}
+
+### Example 4: Knowledge base search (RAG, NOT chatbot)
+Input: "knowledge base Q&A for 1000 employees"
+Output: {"use_case": "document_analysis_rag", "user_count": 1000, "priority": null, "hardware_preference": null}
+
+### Example 5: Semantic search (RAG category)
+Input: "semantic search assistant for 450 knowledge workers"
+Output: {"use_case": "document_analysis_rag", "user_count": 450, "priority": null, "hardware_preference": null}
+
+### Example 6: SHORT summarization (articles, news, brief docs)
 Input: "summarization for 1000 users, budget is tight"
 Output: {"use_case": "summarization_short", "user_count": 1000, "priority": "cost_saving", "hardware_preference": null}
 
-### Example 5: Translation with quality priority
-Input: "translation service for legal documents, 50 lawyers, accuracy is critical"
-Output: {"use_case": "translation", "user_count": 50, "priority": "high_quality", "hardware_preference": null}
-
-### Example 6: Code generation (detailed, with docs)
-Input: "code generation with documentation for 100 engineers"
-Output: {"use_case": "code_generation_detailed", "user_count": 100, "priority": null, "hardware_preference": null}
-
-### Example 7: Content generation for marketing
-Input: "content creation tool for 200 marketers"
-Output: {"use_case": "content_generation", "user_count": 200, "priority": null, "hardware_preference": null}
-
-### Example 8: Long document summarization
+### Example 7: LONG document summarization (reports, books, 10+ pages)
 Input: "summarize long reports for 80 analysts, documents are 50+ pages"
 Output: {"use_case": "long_document_summarization", "user_count": 80, "priority": null, "hardware_preference": null}
 
-### Example 9: Legal/research analysis
-Input: "legal document analysis for 40 attorneys"
-Output: {"use_case": "research_legal_analysis", "user_count": 40, "priority": null, "hardware_preference": null}
+### Example 8: Book/chapter summarization (LONG)
+Input: "book chapter summarization for 50 students"
+Output: {"use_case": "long_document_summarization", "user_count": 50, "priority": null, "hardware_preference": null}
 
-### Example 10: High throughput batch processing
-Input: "translation batch job for 3000 documents, high volume"
-Output: {"use_case": "translation", "user_count": 3000, "priority": "high_throughput", "hardware_preference": null}
+### Example 9: Report condensation (LONG documents)
+Input: "report condensation for 70 managers"
+Output: {"use_case": "long_document_summarization", "user_count": 70, "priority": null, "hardware_preference": null}
+
+### Example 10: Code completion with speed priority
+Input: "code completion for 300 developers, need fast response"
+Output: {"use_case": "code_completion", "user_count": 300, "priority": "low_latency", "hardware_preference": null}
+
+### Example 11: Translation with quality priority
+Input: "translation service for legal documents, 50 lawyers"
+Output: {"use_case": "translation", "user_count": 50, "priority": null, "hardware_preference": null}
+
+### Example 12: Legal/research analysis (multi-document)
+Input: "multi-document analysis for 120 researchers"
+Output: {"use_case": "research_legal_analysis", "user_count": 120, "priority": null, "hardware_preference": null}
 """
 
 INTENT_EXTRACTION_SCHEMA = """
@@ -119,16 +127,26 @@ CRITICAL RULES:
 4. user_count MUST be an integer (estimate if vague: "thousands"→5000, "small team"→20)
 5. hardware_preference: extract GPU type (H100, A100, L4, T4, etc.) or null
 
-USE CASE DISAMBIGUATION:
-- "chatbot", "bot", "assistant", "support" → chatbot_conversational
-- "autocomplete", "completion", "copilot" → code_completion  
-- "code generation", "generate code", "write code" → code_generation_detailed
-- "translate", "translation" → translation
-- "content", "marketing", "blog" → content_generation
-- "summarize", "summary" (short docs) → summarization_short
-- "RAG", "document Q&A", "knowledge base" → document_analysis_rag
-- "long document", "lengthy report" → long_document_summarization
-- "legal", "research", "academic", "contract" → research_legal_analysis
+USE CASE DISAMBIGUATION (CRITICAL - follow exactly):
+
+CHATBOT vs RAG (common confusion!):
+- chatbot_conversational: General chat, NO documents mentioned
+  Keywords: "chatbot", "chat bot", "customer support chat", "virtual assistant"
+- document_analysis_rag: Has documents, knowledge base, retrieval, search
+  Keywords: "RAG", "document Q&A", "knowledge base", "semantic search", "document search", "retrieval"
+  
+SUMMARIZATION LENGTH (common confusion!):
+- summarization_short: Brief summaries, news, articles, short docs
+  Keywords: "summary", "summarize", "brief", "tldr", "news", "article"
+- long_document_summarization: Long reports, books, chapters, 10+ pages
+  Keywords: "long document", "report", "book", "chapter", "lengthy", "50+ pages", "condensation"
+
+OTHER USE CASES:
+- code_completion: "autocomplete", "completion", "copilot", "IDE"
+- code_generation_detailed: "generate code", "code generation", "write code"
+- translation: "translate", "translation", "multilingual"
+- content_generation: "content", "marketing", "blog", "copywriting"
+- research_legal_analysis: "legal", "research", "academic", "contract", "multi-document analysis"
 
 PRIORITY DETECTION:
 - "fast", "quick", "latency", "speed", "instant" → low_latency

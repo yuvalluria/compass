@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-08 15:56:11",
+  "timestamp": "2025-12-08 17:11:38",
   "total_cases": 600,
   "models_evaluated": [
     "qwen2.5:7b",
@@ -17,54 +17,54 @@
     {
       "model": "qwen2.5:7b",
       "total_cases": 600,
-      "weighted_score": 0.9514166666666672,
+      "weighted_score": 0.9495833333333337,
       "field_accuracy": {
-        "use_case": 0.9333333333333333,
-        "user_count": 0.9583333333333334,
-        "priority": 0.9566666666666667,
+        "use_case": 0.93,
+        "user_count": 0.9566666666666667,
+        "priority": 0.9583333333333334,
         "hardware": 0.9966666666666667
       },
       "json_validity": 1.0,
       "schema_compliance": 0.99,
       "latency_ms": {
-        "avg": 913.6216926574707,
-        "p90": 1075.6680965423584
+        "avg": 887.1392444769541,
+        "p90": 1011.6620063781738
       },
       "error_count": 0
     },
     {
       "model": "mistral:7b",
       "total_cases": 600,
-      "weighted_score": 0.9074707846410695,
+      "weighted_score": 0.9073455759599344,
       "field_accuracy": {
         "use_case": 0.8816666666666667,
         "user_count": 0.9183333333333333,
-        "priority": 0.9116666666666666,
+        "priority": 0.91,
         "hardware": 0.9766666666666667
       },
       "json_validity": 0.9983333333333333,
       "schema_compliance": 0.99,
       "latency_ms": {
-        "avg": 1121.6040448347728,
-        "p90": 1287.5959873199463
+        "avg": 1109.5709319909413,
+        "p90": 1289.8900508880615
       },
       "error_count": 1
     },
     {
       "model": "llama3.1:8b",
       "total_cases": 600,
-      "weighted_score": 0.8808305369127533,
+      "weighted_score": 0.8774748322147666,
       "field_accuracy": {
-        "use_case": 0.8383333333333334,
-        "user_count": 0.9283333333333333,
-        "priority": 0.7016666666666667,
-        "hardware": 0.9783333333333334
+        "use_case": 0.8316666666666667,
+        "user_count": 0.9266666666666666,
+        "priority": 0.7066666666666667,
+        "hardware": 0.9766666666666667
       },
       "json_validity": 0.9933333333333333,
       "schema_compliance": 0.99,
       "latency_ms": {
-        "avg": 1056.2593523661296,
-        "p90": 1271.1598873138428
+        "avg": 965.7911423842112,
+        "p90": 1080.273151397705
       },
       "error_count": 4
     }
