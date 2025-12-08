@@ -1,0 +1,79 @@
+{
+  "timestamp": "2025-12-08 12:25:30",
+  "description": "Small model evaluation for Compass business context extraction",
+  "test_cases": 100,
+  "results": [
+    {
+      "model": "qwen2.5:1.5b",
+      "total_cases": 100,
+      "field_accuracy": {
+        "use_case": 0.67,
+        "user_count": 1.0,
+        "priority": 0.55,
+        "hardware": 0.97
+      },
+      "json_valid": 100,
+      "errors": 0,
+      "weighted_score": 0.7877500000000004,
+      "json_validity": 1.0,
+      "latency_ms": {
+        "avg": 250.90328454971313,
+        "p90": 266.20006561279297
+      }
+    },
+    {
+      "model": "qwen2.5:3b",
+      "total_cases": 100,
+      "field_accuracy": {
+        "use_case": 0.72,
+        "user_count": 0.99,
+        "priority": 0.61,
+        "hardware": 0.95
+      },
+      "json_valid": 100,
+      "errors": 0,
+      "weighted_score": 0.81875,
+      "json_validity": 1.0,
+      "latency_ms": {
+        "avg": 373.7910556793213,
+        "p90": 424.2260456085205
+      }
+    },
+    {
+      "model": "gemma2:2b",
+      "total_cases": 100,
+      "field_accuracy": {
+        "use_case": 0.61,
+        "user_count": 0.8,
+        "priority": 0.12,
+        "hardware": 0.77
+      },
+      "json_valid": 81,
+      "errors": 19,
+      "weighted_score": 0.6502499999999998,
+      "json_validity": 0.81,
+      "latency_ms": {
+        "avg": 435.8298134803772,
+        "p90": 485.3508472442627
+      }
+    },
+    {
+      "model": "qwen2.5:7b",
+      "total_cases": 400,
+      "weighted_score": 0.916,
+      "field_accuracy": {
+        "use_case": 0.8875,
+        "user_count": 0.94,
+        "priority": 0.9006,
+        "hardware": 0.918
+      },
+      "json_validity": 1.0,
+      "schema_compliance": 0.995,
+      "latency_ms": {
+        "avg": 746.9,
+        "p90": 978.3
+      },
+      "error_count": 0
+    }
+  ]
+}
