@@ -1,12 +1,18 @@
 {
   "timestamp": "2025-12-08 14:58:08",
   "total_cases": 600,
+  "models_evaluated": [
+    "qwen2.5:7b",
+    "mistral:7b",
+    "llama3.1:8b"
+  ],
   "scoring_weights": {
     "use_case": 0.5,
     "user_count": 0.25,
     "priority": 0.15,
     "hardware": 0.1
   },
+  "note": "Qwen uses few-shot + post-processing improvements",
   "results": [
     {
       "model": "qwen2.5:7b",

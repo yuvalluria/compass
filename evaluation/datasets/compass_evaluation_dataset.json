@@ -1,9 +1,9 @@
 {
   "_metadata": {
     "name": "Compass Business Context Extraction Dataset",
-    "version": "2.1",
-    "description": "Unified evaluation dataset for LLM business context extraction",
-    "total_cases": 400,
+    "version": "3.0",
+    "description": "Expanded evaluation dataset for LLM business context extraction (600 cases)",
+    "total_cases": 600,
     "schema": {
       "use_cases": [
         "chatbot_conversational",
@@ -1145,7 +1145,7 @@
     },
     {
       "id": 131,
-      "input": "צ'אטבוט ל-500 משתמשים",
+      "input": "\u05e6'\u05d0\u05d8\u05d1\u05d5\u05d8 \u05dc-500 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd",
       "expected": {
         "use_case": "chatbot_conversational",
         "user_count": 500
@@ -1153,7 +1153,7 @@
     },
     {
       "id": 132,
-      "input": "עוזר קוד ל-300 מפתחים",
+      "input": "\u05e2\u05d5\u05d6\u05e8 \u05e7\u05d5\u05d3 \u05dc-300 \u05de\u05e4\u05ea\u05d7\u05d9\u05dd",
       "expected": {
         "use_case": "code_completion",
         "user_count": 300
@@ -1161,7 +1161,7 @@
     },
     {
       "id": 133,
-      "input": "שירות תרגום ל-200 משתמשים",
+      "input": "\u05e9\u05d9\u05e8\u05d5\u05ea \u05ea\u05e8\u05d2\u05d5\u05dd \u05dc-200 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd",
       "expected": {
         "use_case": "translation",
         "user_count": 200
@@ -1169,7 +1169,7 @@
     },
     {
       "id": 134,
-      "input": "סיכום מסמכים ל-400 עובדים",
+      "input": "\u05e1\u05d9\u05db\u05d5\u05dd \u05de\u05e1\u05de\u05db\u05d9\u05dd \u05dc-400 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd",
       "expected": {
         "use_case": "summarization_short",
         "user_count": 400
@@ -1177,7 +1177,7 @@
     },
     {
       "id": 135,
-      "input": "מערכת RAG ל-150 אנליסטים",
+      "input": "\u05de\u05e2\u05e8\u05db\u05ea RAG \u05dc-150 \u05d0\u05e0\u05dc\u05d9\u05e1\u05d8\u05d9\u05dd",
       "expected": {
         "use_case": "document_analysis_rag",
         "user_count": 150
@@ -1185,7 +1185,7 @@
     },
     {
       "id": 136,
-      "input": "יצירת תוכן ל-250 משווקים",
+      "input": "\u05d9\u05e6\u05d9\u05e8\u05ea \u05ea\u05d5\u05db\u05df \u05dc-250 \u05de\u05e9\u05d5\u05d5\u05e7\u05d9\u05dd",
       "expected": {
         "use_case": "content_generation",
         "user_count": 250
@@ -1193,7 +1193,7 @@
     },
     {
       "id": 137,
-      "input": "ניתוח מסמכים משפטיים ל-80 עורכי דין",
+      "input": "\u05e0\u05d9\u05ea\u05d5\u05d7 \u05de\u05e1\u05de\u05db\u05d9\u05dd \u05de\u05e9\u05e4\u05d8\u05d9\u05d9\u05dd \u05dc-80 \u05e2\u05d5\u05e8\u05db\u05d9 \u05d3\u05d9\u05df",
       "expected": {
         "use_case": "research_legal_analysis",
         "user_count": 80
@@ -1201,7 +1201,7 @@
     },
     {
       "id": 138,
-      "input": "בוט שירות לקוחות ל-1000 לקוחות",
+      "input": "\u05d1\u05d5\u05d8 \u05e9\u05d9\u05e8\u05d5\u05ea \u05dc\u05e7\u05d5\u05d7\u05d5\u05ea \u05dc-1000 \u05dc\u05e7\u05d5\u05d7\u05d5\u05ea",
       "expected": {
         "use_case": "chatbot_conversational",
         "user_count": 1000
@@ -1209,7 +1209,7 @@
     },
     {
       "id": 139,
-      "input": "השלמת קוד ל-500 מתכנתים, זמן תגובה מהיר",
+      "input": "\u05d4\u05e9\u05dc\u05de\u05ea \u05e7\u05d5\u05d3 \u05dc-500 \u05de\u05ea\u05db\u05e0\u05ea\u05d9\u05dd, \u05d6\u05de\u05df \u05ea\u05d2\u05d5\u05d1\u05d4 \u05de\u05d4\u05d9\u05e8",
       "expected": {
         "use_case": "code_completion",
         "user_count": 500,
@@ -1218,7 +1218,7 @@
     },
     {
       "id": 140,
-      "input": "סיכום ל-300 משתמשים, חיסכון בעלויות",
+      "input": "\u05e1\u05d9\u05db\u05d5\u05dd \u05dc-300 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd, \u05d7\u05d9\u05e1\u05db\u05d5\u05df \u05d1\u05e2\u05dc\u05d5\u05d9\u05d5\u05ea",
       "expected": {
         "use_case": "summarization_short",
         "user_count": 300,
@@ -1227,7 +1227,7 @@
     },
     {
       "id": 141,
-      "input": "צ'אטבוט על H100 ל-600 משתמשים",
+      "input": "\u05e6'\u05d0\u05d8\u05d1\u05d5\u05d8 \u05e2\u05dc H100 \u05dc-600 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd",
       "expected": {
         "use_case": "chatbot_conversational",
         "user_count": 600,
@@ -1236,7 +1236,7 @@
     },
     {
       "id": 142,
-      "input": "מערכת שאלות ותשובות ל-350 חוקרים",
+      "input": "\u05de\u05e2\u05e8\u05db\u05ea \u05e9\u05d0\u05dc\u05d5\u05ea \u05d5\u05ea\u05e9\u05d5\u05d1\u05d5\u05ea \u05dc-350 \u05d7\u05d5\u05e7\u05e8\u05d9\u05dd",
       "expected": {
         "use_case": "document_analysis_rag",
         "user_count": 350
@@ -1244,7 +1244,7 @@
     },
     {
       "id": 143,
-      "input": "עיבוד מסמכים ארוכים ל-100 מנהלים",
+      "input": "\u05e2\u05d9\u05d1\u05d5\u05d3 \u05de\u05e1\u05de\u05db\u05d9\u05dd \u05d0\u05e8\u05d5\u05db\u05d9\u05dd \u05dc-100 \u05de\u05e0\u05d4\u05dc\u05d9\u05dd",
       "expected": {
         "use_case": "long_document_summarization",
         "user_count": 100
@@ -1252,7 +1252,7 @@
     },
     {
       "id": 144,
-      "input": "כתיבה אוטומטית ל-200 כותבים",
+      "input": "\u05db\u05ea\u05d9\u05d1\u05d4 \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05ea \u05dc-200 \u05db\u05d5\u05ea\u05d1\u05d9\u05dd",
       "expected": {
         "use_case": "content_generation",
         "user_count": 200
@@ -1260,7 +1260,7 @@
     },
     {
       "id": 145,
-      "input": "עוזר תכנות ל-400 מהנדסים על A100",
+      "input": "\u05e2\u05d5\u05d6\u05e8 \u05ea\u05db\u05e0\u05d5\u05ea \u05dc-400 \u05de\u05d4\u05e0\u05d3\u05e1\u05d9\u05dd \u05e2\u05dc A100",
       "expected": {
         "use_case": "code_completion",
         "user_count": 400,
@@ -1269,7 +1269,7 @@
     },
     {
       "id": 146,
-      "input": "תרגום מהיר ל-800 משתמשים גלובליים",
+      "input": "\u05ea\u05e8\u05d2\u05d5\u05dd \u05de\u05d4\u05d9\u05e8 \u05dc-800 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd \u05d2\u05dc\u05d5\u05d1\u05dc\u05d9\u05d9\u05dd",
       "expected": {
         "use_case": "translation",
         "user_count": 800,
@@ -1278,7 +1278,7 @@
     },
     {
       "id": 147,
-      "input": "ניתוח מחקרי ל-60 אקדמאים",
+      "input": "\u05e0\u05d9\u05ea\u05d5\u05d7 \u05de\u05d7\u05e7\u05e8\u05d9 \u05dc-60 \u05d0\u05e7\u05d3\u05de\u05d0\u05d9\u05dd",
       "expected": {
         "use_case": "research_legal_analysis",
         "user_count": 60
@@ -1286,7 +1286,7 @@
     },
     {
       "id": 148,
-      "input": "בינה מלאכותית לשירות ל-1500 עובדים",
+      "input": "\u05d1\u05d9\u05e0\u05d4 \u05de\u05dc\u05d0\u05db\u05d5\u05ea\u05d9\u05ea \u05dc\u05e9\u05d9\u05e8\u05d5\u05ea \u05dc-1500 \u05e2\u05d5\u05d1\u05d3\u05d9\u05dd",
       "expected": {
         "use_case": "chatbot_conversational",
         "user_count": 1500
@@ -1294,7 +1294,7 @@
     },
     {
       "id": 149,
-      "input": "מנוע סיכום ל-450 קוראים",
+      "input": "\u05de\u05e0\u05d5\u05e2 \u05e1\u05d9\u05db\u05d5\u05dd \u05dc-450 \u05e7\u05d5\u05e8\u05d0\u05d9\u05dd",
       "expected": {
         "use_case": "summarization_short",
         "user_count": 450
@@ -1302,7 +1302,7 @@
     },
     {
       "id": 150,
-      "input": "כלי קוד ל-180 דבלופרים, עדיפות לעלות נמוכה",
+      "input": "\u05db\u05dc\u05d9 \u05e7\u05d5\u05d3 \u05dc-180 \u05d3\u05d1\u05dc\u05d5\u05e4\u05e8\u05d9\u05dd, \u05e2\u05d3\u05d9\u05e4\u05d5\u05ea \u05dc\u05e2\u05dc\u05d5\u05ea \u05e0\u05de\u05d5\u05db\u05d4",
       "expected": {
         "use_case": "code_completion",
         "user_count": 180,
@@ -2579,7 +2579,7 @@
     },
     {
       "id": 300,
-      "input": "🤖 chatbot 💯 users ⚡ fast",
+      "input": "\ud83e\udd16 chatbot \ud83d\udcaf users \u26a1 fast",
       "expected": {
         "use_case": "chatbot_conversational",
         "user_count": 100,
@@ -2836,7 +2836,7 @@
     },
     {
       "id": 326,
-      "input": "Project requirements summary:\n• Use case: Code generation with documentation\n• Team size: 120 engineers\n• Performance: Not latency sensitive, focus on quality\n• Infrastructure: H200 cluster\n• Timeline: Q1 2024\n• Budget: Approved",
+      "input": "Project requirements summary:\n\u2022 Use case: Code generation with documentation\n\u2022 Team size: 120 engineers\n\u2022 Performance: Not latency sensitive, focus on quality\n\u2022 Infrastructure: H200 cluster\n\u2022 Timeline: Q1 2024\n\u2022 Budget: Approved",
       "expected": {
         "use_case": "code_generation_detailed",
         "user_count": 120,
@@ -3190,7 +3190,7 @@
     },
     {
       "id": 364,
-      "input": "צ'אטבוט ל-400 משתמשים, דיוק הוא הדבר החשוב ביותר",
+      "input": "\u05e6'\u05d0\u05d8\u05d1\u05d5\u05d8 \u05dc-400 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd, \u05d3\u05d9\u05d5\u05e7 \u05d4\u05d5\u05d0 \u05d4\u05d3\u05d1\u05e8 \u05d4\u05d7\u05e9\u05d5\u05d1 \u05d1\u05d9\u05d5\u05ea\u05e8",
       "expected": {
         "use_case": "chatbot_conversational",
         "user_count": 400,
@@ -3199,7 +3199,7 @@
     },
     {
       "id": 365,
-      "input": "מערכת RAG ל-200 חוקרים, איכות מעל הכל",
+      "input": "\u05de\u05e2\u05e8\u05db\u05ea RAG \u05dc-200 \u05d7\u05d5\u05e7\u05e8\u05d9\u05dd, \u05d0\u05d9\u05db\u05d5\u05ea \u05de\u05e2\u05dc \u05d4\u05db\u05dc",
       "expected": {
         "use_case": "document_analysis_rag",
         "user_count": 200,
@@ -3208,7 +3208,7 @@
     },
     {
       "id": 366,
-      "input": "ניתוח משפטי ל-60 עורכי דין על H100, אפס סובלנות לטעויות",
+      "input": "\u05e0\u05d9\u05ea\u05d5\u05d7 \u05de\u05e9\u05e4\u05d8\u05d9 \u05dc-60 \u05e2\u05d5\u05e8\u05db\u05d9 \u05d3\u05d9\u05df \u05e2\u05dc H100, \u05d0\u05e4\u05e1 \u05e1\u05d5\u05d1\u05dc\u05e0\u05d5\u05ea \u05dc\u05d8\u05e2\u05d5\u05d9\u05d5\u05ea",
       "expected": {
         "use_case": "research_legal_analysis",
         "user_count": 60,
@@ -3454,7 +3454,7 @@
     },
     {
       "id": 392,
-      "input": "יצירת תוכן ל-300 משווקים, תפוקה גבוהה",
+      "input": "\u05d9\u05e6\u05d9\u05e8\u05ea \u05ea\u05d5\u05db\u05df \u05dc-300 \u05de\u05e9\u05d5\u05d5\u05e7\u05d9\u05dd, \u05ea\u05e4\u05d5\u05e7\u05d4 \u05d2\u05d1\u05d5\u05d4\u05d4",
       "expected": {
         "use_case": "content_generation",
         "user_count": 300,
@@ -3463,7 +3463,7 @@
     },
     {
       "id": 393,
-      "input": "תרגום ל-500 משתמשים על V100",
+      "input": "\u05ea\u05e8\u05d2\u05d5\u05dd \u05dc-500 \u05de\u05e9\u05ea\u05de\u05e9\u05d9\u05dd \u05e2\u05dc V100",
       "expected": {
         "use_case": "translation",
         "user_count": 500,
@@ -3472,7 +3472,7 @@
     },
     {
       "id": 394,
-      "input": "סיכום מהיר ל-200 אנליסטים על A10",
+      "input": "\u05e1\u05d9\u05db\u05d5\u05dd \u05de\u05d4\u05d9\u05e8 \u05dc-200 \u05d0\u05e0\u05dc\u05d9\u05e1\u05d8\u05d9\u05dd \u05e2\u05dc A10",
       "expected": {
         "use_case": "summarization_short",
         "user_count": 200,
@@ -3535,6 +3535,1780 @@
         "priority": "balanced",
         "hardware": "H100"
       }
+    },
+    {
+      "input": "chatbot for 3000 concurrent users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 3000
+      },
+      "id": 401
+    },
+    {
+      "input": "AI assistant for 50 employees",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 50
+      },
+      "id": 402
+    },
+    {
+      "input": "code autocomplete for 150 software engineers",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 150
+      },
+      "id": 403
+    },
+    {
+      "input": "python code helper for 80 data scientists",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 80
+      },
+      "id": 404
+    },
+    {
+      "input": "translation API for 2500 global customers",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 2500
+      },
+      "id": 405
+    },
+    {
+      "input": "spanish-english translator for 400 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 400
+      },
+      "id": 406
+    },
+    {
+      "input": "blog content writer for 60 marketers",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 60
+      },
+      "id": 407
+    },
+    {
+      "input": "email draft assistant for 900 sales reps",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 900
+      },
+      "id": 408
+    },
+    {
+      "input": "meeting notes summarizer for 250 managers",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 250
+      },
+      "id": 409
+    },
+    {
+      "input": "news article summarization for 1500 readers",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 1500
+      },
+      "id": 410
+    },
+    {
+      "input": "knowledge base search for 700 support agents",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 700
+      },
+      "id": 411
+    },
+    {
+      "input": "internal wiki Q&A for 350 employees",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 350
+      },
+      "id": 412
+    },
+    {
+      "input": "book summarization for 40 editors",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 40
+      },
+      "id": 413
+    },
+    {
+      "input": "annual report processor for 25 analysts",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 25
+      },
+      "id": 414
+    },
+    {
+      "input": "patent analysis for 35 IP lawyers",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 35
+      },
+      "id": 415
+    },
+    {
+      "input": "academic paper review for 150 professors",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 150
+      },
+      "id": 416
+    },
+    {
+      "input": "customer chat assistant for 4000 daily visitors",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 4000
+      },
+      "id": 417
+    },
+    {
+      "input": "helpdesk bot for 180 internal tickets",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 180
+      },
+      "id": 418
+    },
+    {
+      "input": "javascript code suggestions for 120 frontend devs",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 120
+      },
+      "id": 419
+    },
+    {
+      "input": "rust autocomplete for 45 systems programmers",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 45
+      },
+      "id": 420
+    },
+    {
+      "input": "document translator for 650 international users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 650
+      },
+      "id": 421
+    },
+    {
+      "input": "real-time translation for 1800 conference attendees",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1800
+      },
+      "id": 422
+    },
+    {
+      "input": "product description generator for 90 e-commerce managers",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 90
+      },
+      "id": 423
+    },
+    {
+      "input": "social media content for 200 brand managers",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 200
+      },
+      "id": 424
+    },
+    {
+      "input": "report summarizer for 320 consultants",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 320
+      },
+      "id": 425
+    },
+    {
+      "input": "research paper abstract generator for 500 scientists",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 500
+      },
+      "id": 426
+    },
+    {
+      "input": "semantic document search for 400 researchers",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 400
+      },
+      "id": 427
+    },
+    {
+      "input": "policy document Q&A for 150 compliance officers",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 150
+      },
+      "id": 428
+    },
+    {
+      "input": "financial report summarization for 55 CFOs",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 55
+      },
+      "id": 429
+    },
+    {
+      "input": "thesis condensation for 200 graduate students",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 200
+      },
+      "id": 430
+    },
+    {
+      "input": "regulatory document analysis for 70 compliance team",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 70
+      },
+      "id": 431
+    },
+    {
+      "input": "case law research for 90 litigation attorneys",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 90
+      },
+      "id": 432
+    },
+    {
+      "input": "FAQ bot for 2200 website users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 2200
+      },
+      "id": 433
+    },
+    {
+      "input": "IT support chatbot for 450 office workers",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 450
+      },
+      "id": 434
+    },
+    {
+      "input": "terraform code assistant for 65 devops engineers",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 65
+      },
+      "id": 435
+    },
+    {
+      "input": "SQL query helper for 140 data analysts",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 140
+      },
+      "id": 436
+    },
+    {
+      "input": "localization service for 3000 app users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 3000
+      },
+      "id": 437
+    },
+    {
+      "input": "subtitle translation for 800 video editors",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 800
+      },
+      "id": 438
+    },
+    {
+      "input": "ad copy generator for 70 advertising team",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 70
+      },
+      "id": 439
+    },
+    {
+      "input": "newsletter writer for 130 communications staff",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 130
+      },
+      "id": 440
+    },
+    {
+      "input": "chatbot for 600 users, ultra fast response needed",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 600,
+        "priority": "low_latency"
+      },
+      "id": 441
+    },
+    {
+      "input": "code assistant for 200 devs, millisecond latency required",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 200,
+        "priority": "low_latency"
+      },
+      "id": 442
+    },
+    {
+      "input": "translation for 500 users, speed is everything",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 500,
+        "priority": "low_latency"
+      },
+      "id": 443
+    },
+    {
+      "input": "summarization for 300 analysts, instant results needed",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 300,
+        "priority": "low_latency"
+      },
+      "id": 444
+    },
+    {
+      "input": "RAG for 400 users, real-time answers required",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 400,
+        "priority": "low_latency"
+      },
+      "id": 445
+    },
+    {
+      "input": "chatbot for 1000 users, keep expenses low",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 1000,
+        "priority": "cost_saving"
+      },
+      "id": 446
+    },
+    {
+      "input": "code completion for 150 devs, minimize infrastructure cost",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 150,
+        "priority": "cost_saving"
+      },
+      "id": 447
+    },
+    {
+      "input": "translation for 800 users, economical solution needed",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 800,
+        "priority": "cost_saving"
+      },
+      "id": 448
+    },
+    {
+      "input": "summarization for 200 users, budget conscious",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 200,
+        "priority": "cost_saving"
+      },
+      "id": 449
+    },
+    {
+      "input": "RAG for 350 researchers, cost optimization priority",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 350,
+        "priority": "cost_saving"
+      },
+      "id": 450
+    },
+    {
+      "input": "chatbot for 500 users, process maximum requests",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 500,
+        "priority": "high_throughput"
+      },
+      "id": 451
+    },
+    {
+      "input": "translation for 2000 documents daily, volume is key",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 2000,
+        "priority": "high_throughput"
+      },
+      "id": 452
+    },
+    {
+      "input": "summarization batch job for 1500 reports",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 1500,
+        "priority": "high_throughput"
+      },
+      "id": 453
+    },
+    {
+      "input": "content generation for 800 requests per hour",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 800,
+        "priority": "high_throughput"
+      },
+      "id": 454
+    },
+    {
+      "input": "RAG system for bulk document queries, 1000 users",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 1000,
+        "priority": "high_throughput"
+      },
+      "id": 455
+    },
+    {
+      "input": "legal analysis for 50 lawyers, precision is paramount",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 50,
+        "priority": "high_quality"
+      },
+      "id": 456
+    },
+    {
+      "input": "medical document analysis, accuracy critical, 80 doctors",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 80,
+        "priority": "high_quality"
+      },
+      "id": 457
+    },
+    {
+      "input": "financial analysis for 40 auditors, no errors allowed",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 40,
+        "priority": "high_quality"
+      },
+      "id": 458
+    },
+    {
+      "input": "translation for legal contracts, must be precise, 100 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 100,
+        "priority": "high_quality"
+      },
+      "id": 459
+    },
+    {
+      "input": "code generation for security code, correctness essential, 60 devs",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 60,
+        "priority": "high_quality"
+      },
+      "id": 460
+    },
+    {
+      "input": "chatbot for 400 users, balance speed and cost",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 400,
+        "priority": "balanced"
+      },
+      "id": 461
+    },
+    {
+      "input": "code completion for 250 devs, standard requirements",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 250,
+        "priority": "balanced"
+      },
+      "id": 462
+    },
+    {
+      "input": "translation for 600 users, moderate performance fine",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 600,
+        "priority": "balanced"
+      },
+      "id": 463
+    },
+    {
+      "input": "summarization for 350 users, normal priority",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 350,
+        "priority": "balanced"
+      },
+      "id": 464
+    },
+    {
+      "input": "RAG for 500 knowledge workers, average latency acceptable",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 500,
+        "priority": "balanced"
+      },
+      "id": 465
+    },
+    {
+      "input": "fast chatbot for 800 customers, response under 200ms",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 800,
+        "priority": "low_latency"
+      },
+      "id": 466
+    },
+    {
+      "input": "cheap translation service for 1500 users on a budget",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1500,
+        "priority": "cost_saving"
+      },
+      "id": 467
+    },
+    {
+      "input": "high volume summarization, 3000 documents daily",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 3000,
+        "priority": "high_throughput"
+      },
+      "id": 468
+    },
+    {
+      "input": "precise legal document review for 30 senior partners",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 30,
+        "priority": "high_quality"
+      },
+      "id": 469
+    },
+    {
+      "input": "standard chatbot deployment for 500 internal users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 500,
+        "priority": "balanced"
+      },
+      "id": 470
+    },
+    {
+      "input": "lightning fast code suggestions for 300 engineers",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 300,
+        "priority": "low_latency"
+      },
+      "id": 471
+    },
+    {
+      "input": "affordable content generation for small team of 50",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 50,
+        "priority": "cost_saving"
+      },
+      "id": 472
+    },
+    {
+      "input": "massive scale RAG for 5000 enterprise users",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 5000,
+        "priority": "high_throughput"
+      },
+      "id": 473
+    },
+    {
+      "input": "accurate research analysis for 25 PhD researchers",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 25,
+        "priority": "high_quality"
+      },
+      "id": 474
+    },
+    {
+      "input": "general purpose chatbot for 700 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 700,
+        "priority": "balanced"
+      },
+      "id": 475
+    },
+    {
+      "input": "quick translation for customer support, 400 agents",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 400,
+        "priority": "low_latency"
+      },
+      "id": 476
+    },
+    {
+      "input": "budget-friendly summarization for 250 students",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 250,
+        "priority": "cost_saving"
+      },
+      "id": 477
+    },
+    {
+      "input": "batch content generation for 1200 marketing campaigns",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 1200,
+        "priority": "high_throughput"
+      },
+      "id": 478
+    },
+    {
+      "input": "meticulous contract analysis for 45 corporate lawyers",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 45,
+        "priority": "high_quality"
+      },
+      "id": 479
+    },
+    {
+      "input": "versatile chatbot for 600 users, balanced approach",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 600,
+        "priority": "balanced"
+      },
+      "id": 480
+    },
+    {
+      "input": "chatbot on NVIDIA H100 for 500 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 500,
+        "hardware": "H100"
+      },
+      "id": 481
+    },
+    {
+      "input": "code completion using H200 GPUs for 300 developers",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 300,
+        "hardware": "H200"
+      },
+      "id": 482
+    },
+    {
+      "input": "translation on A100 cluster for 800 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 800,
+        "hardware": "A100"
+      },
+      "id": 483
+    },
+    {
+      "input": "summarization on L4 accelerators for 400 analysts",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 400,
+        "hardware": "L4"
+      },
+      "id": 484
+    },
+    {
+      "input": "RAG system on T4 GPUs for 600 researchers",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 600,
+        "hardware": "T4"
+      },
+      "id": 485
+    },
+    {
+      "input": "content generation on A10G for 200 marketers",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 200,
+        "hardware": "A10G"
+      },
+      "id": 486
+    },
+    {
+      "input": "legal analysis on V100 for 50 attorneys",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 50,
+        "hardware": "V100"
+      },
+      "id": 487
+    },
+    {
+      "input": "code generation on A10 for 150 engineers",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 150,
+        "hardware": "A10"
+      },
+      "id": 488
+    },
+    {
+      "input": "long document processing on H100 for 80 analysts",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 80,
+        "hardware": "H100"
+      },
+      "id": 489
+    },
+    {
+      "input": "chatbot deployed on H200 SXM for 1000 customers",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 1000,
+        "hardware": "H200"
+      },
+      "id": 490
+    },
+    {
+      "input": "fast chatbot on H100, 600 users, low latency",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 600,
+        "priority": "low_latency",
+        "hardware": "H100"
+      },
+      "id": 491
+    },
+    {
+      "input": "cheap translation on T4, 500 users, budget priority",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 500,
+        "priority": "cost_saving",
+        "hardware": "T4"
+      },
+      "id": 492
+    },
+    {
+      "input": "high throughput RAG on A100 for 2000 queries",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 2000,
+        "priority": "high_throughput",
+        "hardware": "A100"
+      },
+      "id": 493
+    },
+    {
+      "input": "precise legal on H200 for 40 partners, quality focus",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 40,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 494
+    },
+    {
+      "input": "balanced chatbot on L4 for 800 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 800,
+        "priority": "balanced",
+        "hardware": "L4"
+      },
+      "id": 495
+    },
+    {
+      "input": "using our H100 cluster for a code assistant, 250 devs",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 250,
+        "hardware": "H100"
+      },
+      "id": 496
+    },
+    {
+      "input": "deploy on A100-80GB, summarization for 300 users",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 300,
+        "hardware": "A100"
+      },
+      "id": 497
+    },
+    {
+      "input": "translation service on H200 infrastructure for 1200 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1200,
+        "hardware": "H200"
+      },
+      "id": 498
+    },
+    {
+      "input": "RAG Q&A on L4 GPUs for 450 support agents",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 450,
+        "hardware": "L4"
+      },
+      "id": 499
+    },
+    {
+      "input": "content tool on A10G accelerators for 180 writers",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 180,
+        "hardware": "A10G"
+      },
+      "id": 500
+    },
+    {
+      "input": "code gen on T4 for budget deployment, 100 devs",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 100,
+        "priority": "cost_saving",
+        "hardware": "T4"
+      },
+      "id": 501
+    },
+    {
+      "input": "instant chatbot response on H100, 500 concurrent",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 500,
+        "priority": "low_latency",
+        "hardware": "H100"
+      },
+      "id": 502
+    },
+    {
+      "input": "batch translation on A100 cluster, 3000 documents",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 3000,
+        "priority": "high_throughput",
+        "hardware": "A100"
+      },
+      "id": 503
+    },
+    {
+      "input": "accurate research on H200 for 60 scientists",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 60,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 504
+    },
+    {
+      "input": "standard summarization on L4 for 400 analysts",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 400,
+        "priority": "balanced",
+        "hardware": "L4"
+      },
+      "id": 505
+    },
+    {
+      "input": "H100 deployment for real-time translation, 700 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 700,
+        "priority": "low_latency",
+        "hardware": "H100"
+      },
+      "id": 506
+    },
+    {
+      "input": "cost-effective chatbot on T4, 800 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 800,
+        "priority": "cost_saving",
+        "hardware": "T4"
+      },
+      "id": 507
+    },
+    {
+      "input": "high volume code completion on A100, 1000 developers",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 1000,
+        "priority": "high_throughput",
+        "hardware": "A100"
+      },
+      "id": 508
+    },
+    {
+      "input": "quality-focused legal on H100 for 35 partners",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 35,
+        "priority": "high_quality",
+        "hardware": "H100"
+      },
+      "id": 509
+    },
+    {
+      "input": "general purpose RAG on A10G for 550 users",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 550,
+        "priority": "balanced",
+        "hardware": "A10G"
+      },
+      "id": 510
+    },
+    {
+      "input": "A100 cluster for fast code generation, 200 engineers",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 200,
+        "priority": "low_latency",
+        "hardware": "A100"
+      },
+      "id": 511
+    },
+    {
+      "input": "L4 GPUs for affordable summarization, 350 users",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 350,
+        "priority": "cost_saving",
+        "hardware": "L4"
+      },
+      "id": 512
+    },
+    {
+      "input": "H200 for massive translation throughput, 4000 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 4000,
+        "priority": "high_throughput",
+        "hardware": "H200"
+      },
+      "id": 513
+    },
+    {
+      "input": "T4 deployment for precise document analysis, 70 lawyers",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 70,
+        "priority": "high_quality",
+        "hardware": "T4"
+      },
+      "id": 514
+    },
+    {
+      "input": "H100 for versatile chatbot, 900 customers",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 900,
+        "priority": "balanced",
+        "hardware": "H100"
+      },
+      "id": 515
+    },
+    {
+      "input": "chatbot infra on nvidia h100 gpu",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 100,
+        "hardware": "H100"
+      },
+      "id": 516
+    },
+    {
+      "input": "code tool on NVIDIA A100",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 50,
+        "hardware": "A100"
+      },
+      "id": 517
+    },
+    {
+      "input": "translation api running on l4",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 100,
+        "hardware": "L4"
+      },
+      "id": 518
+    },
+    {
+      "input": "summarizer deployed on t4 gpus",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 50,
+        "hardware": "T4"
+      },
+      "id": 519
+    },
+    {
+      "input": "rag on a10g infrastructure",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 100,
+        "hardware": "A10G"
+      },
+      "id": 520
+    },
+    {
+      "input": "We've been evaluating AI solutions for our customer service team. The project started last quarter. Multiple vendors were considered. We had extensive meetings with stakeholders. After careful analysis, we need a chatbot for 850 users with low latency. The IT team is ready for implementation. Budget has been approved.",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 850,
+        "priority": "low_latency"
+      },
+      "id": 521
+    },
+    {
+      "input": "Our company has grown significantly over the past decade. We now operate in 15 countries. Digital transformation is a key priority. The board approved AI investments. Our specific need: code completion for 320 developers using H100 GPUs. The DevOps team will handle deployment.",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 320,
+        "hardware": "H100"
+      },
+      "id": 522
+    },
+    {
+      "input": "Background: We are a global consulting firm. We have offices in major cities. Our clients span multiple industries. We recently hired an AI strategy team. The request: translation service for 1400 international users, cost efficiency is key, running on A100 GPUs. Timeline is Q2.",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1400,
+        "priority": "cost_saving",
+        "hardware": "A100"
+      },
+      "id": 523
+    },
+    {
+      "input": "Introduction to our organization: Founded in 2005, we've become a leader in financial services. Compliance is critical in our industry. We work with regulators daily. What we're looking for is research analysis capability for 95 compliance officers on H200 infrastructure, accuracy is paramount.",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 95,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 524
+    },
+    {
+      "input": "Executive summary: The marketing department has grown to 450 people. Content creation is a major bottleneck. We've benchmarked several tools. Our conclusion: we need a content generation tool for 450 marketers with high throughput on L4 GPUs. Procurement is in progress.",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 450,
+        "priority": "high_throughput",
+        "hardware": "L4"
+      },
+      "id": 525
+    },
+    {
+      "input": "Status update on AI initiative: Phase 1 complete. Phase 2 starting. Legal department requested support. The specific ask: legal document analysis for 65 attorneys, precision is non-negotiable, deploy on our A100 cluster. Target go-live is March.",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 65,
+        "priority": "high_quality",
+        "hardware": "A100"
+      },
+      "id": 526
+    },
+    {
+      "input": "Meeting notes from yesterday: Discussed various options. Considered build vs buy. Aligned on timeline. Final decision: RAG document system for 580 knowledge workers, balanced performance requirements, using T4 GPUs from our existing pool.",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 580,
+        "priority": "balanced",
+        "hardware": "T4"
+      },
+      "id": 527
+    },
+    {
+      "input": "Project brief: Support 1200 global employees. Multiple languages required. Real-time capability essential. The solution: chatbot with low latency for 1200 users deployed on H100 cluster. Security review pending.",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 1200,
+        "priority": "low_latency",
+        "hardware": "H100"
+      },
+      "id": 528
+    },
+    {
+      "input": "IT request form: Requestor: Engineering. Purpose: Developer productivity. Users: 275 software engineers. Requirement: code assistance tool, fast response time, on our H200 infrastructure. Priority: High.",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 275,
+        "priority": "low_latency",
+        "hardware": "H200"
+      },
+      "id": 529
+    },
+    {
+      "input": "After reviewing our annual reports and consulting with department heads, the finance team of 120 analysts has expressed a need for long document summarization capabilities to process quarterly earnings reports more efficiently. We should deploy this on our existing A10G infrastructure.",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 120,
+        "hardware": "A10G"
+      },
+      "id": 530
+    },
+    {
+      "input": "In our strategic planning session, we identified several AI opportunities. Customer experience topped the list. We have 650 support agents across time zones. They need a chatbot solution. Speed is critical for customer satisfaction. We're allocating H100 resources.",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 650,
+        "priority": "low_latency",
+        "hardware": "H100"
+      },
+      "id": 531
+    },
+    {
+      "input": "Vendor evaluation complete. Selected cloud platform. Now configuring services. The engineering team (225 developers) needs code completion. Response time under 100ms is required. Using our A100-80GB allocation.",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 225,
+        "priority": "low_latency",
+        "hardware": "A100"
+      },
+      "id": 532
+    },
+    {
+      "input": "Global expansion requires multilingual support. We're entering 10 new markets. Customer base growing to 2800. Need translation service with high volume processing capability. Budget approved for L4 GPU cluster.",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 2800,
+        "priority": "high_throughput",
+        "hardware": "L4"
+      },
+      "id": 533
+    },
+    {
+      "input": "The research department has been struggling with document analysis. They process hundreds of papers weekly. Team size: 180 researchers. They need a RAG system. Quality matters more than speed. H200 available.",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 180,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 534
+    },
+    {
+      "input": "Content marketing transformation initiative. Phase 3 implementation. Target users: 380 content creators. Deliverable: AI writing assistant. Performance requirement: balanced speed and quality. Infrastructure: A100 cluster.",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 380,
+        "priority": "balanced",
+        "hardware": "A100"
+      },
+      "id": 535
+    },
+    {
+      "input": "We're restructuring our support operations. New ticketing system deployed. AI integration planned. Need: chatbot for 950 customer service reps. Must be cost effective. Using T4 GPUs.",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 950,
+        "priority": "cost_saving",
+        "hardware": "T4"
+      },
+      "id": 536
+    },
+    {
+      "input": "Software development acceleration program. Goal: reduce time to market. Beneficiaries: 185 engineers. Tool required: code generation with documentation. Quality focus. H100 infrastructure ready.",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 185,
+        "priority": "high_quality",
+        "hardware": "H100"
+      },
+      "id": 537
+    },
+    {
+      "input": "Document intelligence platform RFP. Scope: enterprise-wide deployment. Users: 720 analysts and managers. Capability: summarization. Volume: thousands of documents daily. Hardware: L4 cluster.",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 720,
+        "priority": "high_throughput",
+        "hardware": "L4"
+      },
+      "id": 538
+    },
+    {
+      "input": "International operations require language support. Translation needed for contracts and communications. 1600 users globally. Budget constraints exist. Deploying on T4 infrastructure.",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1600,
+        "priority": "cost_saving",
+        "hardware": "T4"
+      },
+      "id": 539
+    },
+    {
+      "input": "Our investment research team requires comprehensive analysis capabilities. Team size: 55 senior analysts. Focus: detailed financial document review. Accuracy is paramount. Using H200 for best quality.",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 55,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 540
+    },
+    {
+      "input": "Post-acquisition integration requires new AI capabilities. Combined workforce: 3500 employees. Need: general AI assistant chatbot. Standard requirements. H100 cluster provisioned.",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 3500,
+        "priority": "balanced",
+        "hardware": "H100"
+      },
+      "id": 541
+    },
+    {
+      "input": "Developer experience improvement program. Baseline surveys complete. Target population: 410 developers. Solution: IDE-integrated code completion. Sub-second response required. A100 allocated.",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 410,
+        "priority": "low_latency",
+        "hardware": "A100"
+      },
+      "id": 542
+    },
+    {
+      "input": "Globalization strategy implementation. Markets: EMEA, APAC, Americas. Translation volume: massive. Users: 2200 marketing and sales. Throughput is priority. L4 infrastructure.",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 2200,
+        "priority": "high_throughput",
+        "hardware": "L4"
+      },
+      "id": 543
+    },
+    {
+      "input": "Annual report processing automation. Finance team: 85 accountants and analysts. Requirement: long document summarization for quarterly reports. Quality critical. A100 recommended.",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 85,
+        "priority": "high_quality",
+        "hardware": "A100"
+      },
+      "id": 544
+    },
+    {
+      "input": "Knowledge management transformation. Repository: 10M documents. Users: 640 employees. Tool: RAG-based document Q&A. Response time: under 2 seconds. T4 cluster available.",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 640,
+        "priority": "low_latency",
+        "hardware": "T4"
+      },
+      "id": 545
+    },
+    {
+      "input": "Compliance modernization project. Regulatory requirements increasing. Legal team: 75 compliance specialists. Need: document analysis for regulatory filings. Zero tolerance for errors. H200 infrastructure.",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 75,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 546
+    },
+    {
+      "input": "Content factory initiative. Goal: 10x content output. Team: 290 writers and editors. Tool: AI content generation. High volume processing needed. A10G GPUs available.",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 290,
+        "priority": "high_throughput",
+        "hardware": "A10G"
+      },
+      "id": 547
+    },
+    {
+      "input": "Customer success platform enhancement. Support agents: 480. Feature request: AI chatbot integration. Must handle peak loads. Cost efficiency important. T4 deployment.",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 480,
+        "priority": "cost_saving",
+        "hardware": "T4"
+      },
+      "id": 548
+    },
+    {
+      "input": "Code quality improvement initiative. Engineering org: 340 developers. Tool: detailed code generation with tests and docs. Quality over speed. H100 cluster.",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 340,
+        "priority": "high_quality",
+        "hardware": "H100"
+      },
+      "id": 549
+    },
+    {
+      "input": "Executive briefing summarization. C-suite and VPs: 45 executives. Long reports need condensing. Accuracy essential. Premium H200 infrastructure allocated.",
+      "expected": {
+        "use_case": "long_document_summarization",
+        "user_count": 45,
+        "priority": "high_quality",
+        "hardware": "H200"
+      },
+      "id": 550
+    },
+    {
+      "input": "chatbott for 5k users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 5000
+      },
+      "id": 551
+    },
+    {
+      "input": "coede completn for 200 devs pls",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 200
+      },
+      "id": 552
+    },
+    {
+      "input": "translatn svc 4 1.5k usrs",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1500
+      },
+      "id": 553
+    },
+    {
+      "input": "sumery tool 4 300 ppl",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 300
+      },
+      "id": 554
+    },
+    {
+      "input": "rag systm for ~500 anlysts",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 500
+      },
+      "id": 555
+    },
+    {
+      "input": "contnet gen 4 100 marketrs",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 100
+      },
+      "id": 556
+    },
+    {
+      "input": "legla analyss 4 50 laywers",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 50
+      },
+      "id": 557
+    },
+    {
+      "input": "chatbot w/ low latecy, 400 usrs",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 400,
+        "priority": "low_latency"
+      },
+      "id": 558
+    },
+    {
+      "input": "code asistant on h100 4 150 devs",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 150,
+        "hardware": "H100"
+      },
+      "id": 559
+    },
+    {
+      "input": "cheep transaltion 4 800 ppl",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 800,
+        "priority": "cost_saving"
+      },
+      "id": 560
+    },
+    {
+      "input": "yo need chatbot 4 like 600 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 600
+      },
+      "id": 561
+    },
+    {
+      "input": "gonna need code help 4 about 100 devs",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 100
+      },
+      "id": 562
+    },
+    {
+      "input": "smth 2 translate stuff, 500ish users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 500
+      },
+      "id": 563
+    },
+    {
+      "input": "need it super fast tho, chatbot, 800 users maybe",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 800,
+        "priority": "low_latency"
+      },
+      "id": 564
+    },
+    {
+      "input": "budget tight af, summarization for 400",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 400,
+        "priority": "cost_saving"
+      },
+      "id": 565
+    },
+    {
+      "input": "got h100s, wanna run rag, 300 peeps",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 300,
+        "hardware": "H100"
+      },
+      "id": 566
+    },
+    {
+      "input": "AI thing 4 customer support, dunno like 700?",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 700
+      },
+      "id": 567
+    },
+    {
+      "input": "code gen stuff for our eng team (~120)",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 120
+      },
+      "id": 568
+    },
+    {
+      "input": "RAG thingy for docs, 250 users I guess",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 250
+      },
+      "id": 569
+    },
+    {
+      "input": "summerizer plz, 150 analysts or so",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 150
+      },
+      "id": 570
+    },
+    {
+      "input": "chatbot w/ low latency if posible? 200 usrs",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 200,
+        "priority": "low_latency"
+      },
+      "id": 571
+    },
+    {
+      "input": "contentt writing AI, 80 writers gonna use it",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 80
+      },
+      "id": 572
+    },
+    {
+      "input": "legal stuff analyzer, 40 lawyrs, gotta be on a100",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 40,
+        "hardware": "A100"
+      },
+      "id": 573
+    },
+    {
+      "input": "transaltion svc, hi volume, like 3k usrs",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 3000,
+        "priority": "high_throughput"
+      },
+      "id": 574
+    },
+    {
+      "input": "code autocomplt for 250 devs plz",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 250
+      },
+      "id": 575
+    },
+    {
+      "input": "chatbor for 500 usres",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 500
+      },
+      "id": 576
+    },
+    {
+      "input": "transaltion servis 600 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 600
+      },
+      "id": 577
+    },
+    {
+      "input": "code compeltion 300 devs",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 300
+      },
+      "id": 578
+    },
+    {
+      "input": "sumarization tool 100 analysts",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 100
+      },
+      "id": 579
+    },
+    {
+      "input": "RAG systm for 400 usrs",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 400
+      },
+      "id": 580
+    },
+    {
+      "input": "chatbot with lo latency for 350 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 350,
+        "priority": "low_latency"
+      },
+      "id": 581
+    },
+    {
+      "input": "H10 GPUs chatbot 200 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 200,
+        "hardware": "H100"
+      },
+      "id": 582
+    },
+    {
+      "input": "contet generation 150 marketrs",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 150
+      },
+      "id": 583
+    },
+    {
+      "input": "legla analysis 30 laywers",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 30
+      },
+      "id": 584
+    },
+    {
+      "input": "cod genertion 80 engneers",
+      "expected": {
+        "use_case": "code_generation_detailed",
+        "user_count": 80
+      },
+      "id": 585
+    },
+    {
+      "input": "documnet analysis for 200 resarchers",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 200
+      },
+      "id": 586
+    },
+    {
+      "input": "chatbot A10 GPUs 600 usrs",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 600,
+        "hardware": "A100"
+      },
+      "id": 587
+    },
+    {
+      "input": "tranlation cheap 1500 users",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 1500,
+        "priority": "cost_saving"
+      },
+      "id": 588
+    },
+    {
+      "input": "summerization 200 ppl",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 200
+      },
+      "id": 589
+    },
+    {
+      "input": "chatbott fast responce 300 users",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 300,
+        "priority": "low_latency"
+      },
+      "id": 590
+    },
+    {
+      "input": "chatbot",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 10
+      },
+      "id": 591
+    },
+    {
+      "input": "code helper",
+      "expected": {
+        "use_case": "code_completion",
+        "user_count": 50
+      },
+      "id": 592
+    },
+    {
+      "input": "translator",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 100
+      },
+      "id": 593
+    },
+    {
+      "input": "summarizer",
+      "expected": {
+        "use_case": "summarization_short",
+        "user_count": 50
+      },
+      "id": 594
+    },
+    {
+      "input": "document search",
+      "expected": {
+        "use_case": "document_analysis_rag",
+        "user_count": 50
+      },
+      "id": 595
+    },
+    {
+      "input": "content writer",
+      "expected": {
+        "use_case": "content_generation",
+        "user_count": 30
+      },
+      "id": 596
+    },
+    {
+      "input": "legal tool",
+      "expected": {
+        "use_case": "research_legal_analysis",
+        "user_count": 20
+      },
+      "id": 597
+    },
+    {
+      "input": "fast chatbot",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 50,
+        "priority": "low_latency"
+      },
+      "id": 598
+    },
+    {
+      "input": "cheap translation",
+      "expected": {
+        "use_case": "translation",
+        "user_count": 100,
+        "priority": "cost_saving"
+      },
+      "id": 599
+    },
+    {
+      "input": "on H100",
+      "expected": {
+        "use_case": "chatbot_conversational",
+        "user_count": 50,
+        "hardware": "H100"
+      },
+      "id": 600
     }
   ]
 }

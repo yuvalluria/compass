@@ -8,25 +8,21 @@ Comprehensive evaluation framework for comparing LLMs on the Compass business co
 
 | Metric | Score |
 |--------|-------|
-| **Weighted Score** | **92.6%** |
-| Use Case Accuracy | 89.8% |
-| User Count Accuracy | 96.0% |
-| Priority Detection | 85.8% |
-| Hardware Detection | 99.5% |
+| **Weighted Score** | **92.5%** |
+| Use Case Accuracy | 90.2% |
+| User Count Accuracy | 95.7% |
+| Priority Detection | 84.3% |
+| Hardware Detection | 99.3% |
 | JSON Validity | 100% |
-| Avg Latency | 1388ms |
+| Avg Latency | 1409ms |
 
-### All Models Compared (7 models × 400 test cases)
+### Top 3 Models Compared (600 test cases)
 
-| Rank | Model | Score | Use Case | User Count | Priority | Hardware | JSON |
-|------|-------|-------|----------|------------|----------|----------|------|
-| 🥇 | **qwen2.5:7b** | 92.6% | 89.8% | 96.0% | 85.8% | 99.5% | 100% |
-| 🥈 | gemma2:9b | 90.8% | 86.8% | 94.2% | 86.0% | 99.2% | 99.5% |
-| 🥉 | llama3.1:8b | 87.5% | 81.8% | 95.0% | 72.5% | 92.6% | 100% |
-| 4 | mistral:7b | 86.9% | 82.0% | 94.5% | 72.5% | 95.9% | 100% |
-| 5 | phi3:medium | 83.6% | 79.2% | 91.2% | 71.3% | 82.0% | 97.2% |
-| 6 | phi3:mini | 77.7% | 71.5% | 85.2% | 64.9% | 69.7% | 91.0% |
-| 7 | tinyllama | 35.0% | 30.0% | 32.5% | 26.3% | 38.5% | 99.8% |
+| Rank | Model | Score | Use Case | User Count | Priority | Hardware | JSON | Latency |
+|------|-------|-------|----------|------------|----------|----------|------|---------|
+| 🥇 | **Qwen 2.5 7B** | **92.5%** | 90.2% | 95.7% | 84.3% | 99.3% | 100% | 1409ms |
+| 🥈 | Mistral 7B | 87.3% | 86.0% | 92.5% | 70.8% | 98.3% | 100% | 1893ms |
+| 🥉 | Llama 3.1 8B | 86.5% | 86.5% | 92.7% | 35.7% | 97.0% | 98.8% | 2381ms |
 
 ---
 
@@ -83,18 +79,18 @@ evaluation/
 
 ---
 
-## 📦 Dataset: 400 Unified Test Cases
+## 📦 Dataset: 600 Unified Test Cases
 
 ### Composition
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| Basic | 229 | use_case + user_count only |
-| With Priority | 171 | Includes latency/cost keywords |
-| With Hardware | 122 | GPU mentions (H100, A100, etc.) |
-| Needle-in-Haystack | 40 | Long text, info buried |
-| Edge Cases | 30 | Typos, informal language |
-| High Quality Priority | 40 | "Accuracy is key" cases |
+| Basic | 370 | use_case + user_count only |
+| With Priority | 220 | Includes latency/cost keywords |
+| With Hardware | 150 | GPU mentions (H100, A100, etc.) |
+| Needle-in-Haystack | 70 | Long text, info buried |
+| Edge Cases | 90 | Typos, informal language |
+| Ambiguous/Minimal | 50 | Very short inputs |
 
 ### Valid Schema Values
 
