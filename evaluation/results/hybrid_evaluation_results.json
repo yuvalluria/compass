@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-07 19:35:49",
+  "timestamp": "2025-12-08 12:58:35",
   "results": [
     {
       "model": "tinyllama",
@@ -75,19 +75,21 @@
     },
     {
       "model": "qwen2.5:7b",
+      "version": "with_improvements",
+      "description": "Few-shot examples + Post-processing validation",
       "total_cases": 400,
-      "weighted_score": 0.916,
+      "weighted_score": 0.9256875000000011,
       "field_accuracy": {
-        "use_case": 0.8875,
-        "user_count": 0.94,
-        "priority": 0.9006,
-        "hardware": 0.918
+        "use_case": 0.8975,
+        "user_count": 0.96,
+        "priority": 0.8575,
+        "hardware": 0.995
       },
       "json_validity": 1.0,
       "schema_compliance": 0.995,
       "latency_ms": {
-        "avg": 746.9,
-        "p90": 978.3
+        "avg": 1387.6984483003616,
+        "p90": 1822.2620487213135
       },
       "error_count": 0
     },
@@ -127,5 +129,6 @@
       },
       "error_count": 11
     }
-  ]
+  ],
+  "note": "Updated with few-shot + post-processing improvements"
 }

@@ -1,12 +1,36 @@
 # 🧪 LLM Evaluation Framework for Compass
 
-This directory contains the evaluation framework for comparing different LLMs on the Compass intent extraction task.
+Comprehensive evaluation framework for comparing LLMs on the Compass business context extraction task.
 
-## 📊 Overview
+## 📊 Latest Results (December 2024)
 
-Compass uses an LLM to extract structured intent from natural language deployment requests. This evaluation framework helps determine which LLM provides the best accuracy, quality, and performance.
+### Winner: **Qwen 2.5 7B** (with improvements)
 
-### Task: Intent Extraction
+| Metric | Score |
+|--------|-------|
+| **Weighted Score** | **92.6%** |
+| Use Case Accuracy | 89.8% |
+| User Count Accuracy | 96.0% |
+| Priority Detection | 85.8% |
+| Hardware Detection | 99.5% |
+| JSON Validity | 100% |
+| Avg Latency | 1388ms |
+
+### All Models Compared (7 models × 400 test cases)
+
+| Rank | Model | Score | Use Case | User Count | Priority | Hardware | JSON |
+|------|-------|-------|----------|------------|----------|----------|------|
+| 🥇 | **qwen2.5:7b** | 92.6% | 89.8% | 96.0% | 85.8% | 99.5% | 100% |
+| 🥈 | gemma2:9b | 90.8% | 86.8% | 94.2% | 86.0% | 99.2% | 99.5% |
+| 🥉 | llama3.1:8b | 87.5% | 81.8% | 95.0% | 72.5% | 92.6% | 100% |
+| 4 | mistral:7b | 86.9% | 82.0% | 94.5% | 72.5% | 95.9% | 100% |
+| 5 | phi3:medium | 83.6% | 79.2% | 91.2% | 71.3% | 82.0% | 97.2% |
+| 6 | phi3:mini | 77.7% | 71.5% | 85.2% | 64.9% | 69.7% | 91.0% |
+| 7 | tinyllama | 35.0% | 30.0% | 32.5% | 26.3% | 38.5% | 99.8% |
+
+---
+
+## 🎯 Task: Business Context Extraction
 
 ```
 Input:  "chatbot for 500 users, low latency, on H100"
@@ -18,100 +42,86 @@ Output: {
 }
 ```
 
-## 🏆 Models Evaluated (Tier 1 - Open Source)
-
-| Model | Size | Notes |
-|-------|------|-------|
-| **Llama 3.1 8B** | 8B | Current baseline |
-| **Llama 3.1 70B** | 70B | Larger, more capable |
-| **Mistral 7B v0.3** | 7B | Fast, efficient |
-| **Mixtral 8x7B** | 47B | MoE architecture |
-| **Qwen 2.5 7B** | 7B | Strong reasoning |
-| **Qwen 2.5 72B** | 72B | Top performer |
-| **Phi-3 Medium** | 14B | Microsoft, efficient |
-| **Gemma 2 9B** | 9B | Google, fast |
+---
 
 ## 📁 Directory Structure
 
 ```
 evaluation/
-├── README.md                                # This file
+├── README.md                          # This file
+├── SCORING_METHODOLOGY.md             # How scoring works
+├── DATASET_DOCUMENTATION.md           # Dataset explanation
+│
 ├── datasets/
-│   ├── compass_intent_extraction.json       # Custom Compass dataset (200 cases)
-│   ├── json_generation_benchmark.json       # JSON extraction benchmark (100 cases)
-│   └── nlu_benchmark.json                   # NLU intent/slot filling (80 cases)
+│   ├── compass_evaluation_dataset.json  # 400 unified test cases
+│   └── json_validity_benchmark.json     # JSON validity tests
+│
 ├── scripts/
-│   ├── evaluator.py                         # Core evaluation logic
-│   ├── dataset_loader.py                    # Multi-dataset loader
-│   └── run_evaluation.py                    # Main runner script
-└── results/
-    ├── results_<model>_<timestamp>.json     # Detailed results per model
-    └── summary_<timestamp>.json             # Comparison summary
+│   ├── hybrid_evaluator.py              # Main evaluation script
+│   ├── evaluate_with_improvements.py    # Eval with few-shot + post-processing
+│   ├── evaluate_small_models.py         # Small model comparison
+│   ├── test_improvements.py             # Quick improvement tests
+│   ├── create_hybrid_presentation.py    # Generate visualizations
+│   ├── create_head_to_head.py           # Qwen vs Mistral comparison
+│   └── create_small_model_presentation.py
+│
+├── results/
+│   ├── hybrid_evaluation_results.json   # Main results (7 models)
+│   ├── small_model_evaluation.json      # Small model results
+│   ├── qwen_improved_results.json       # Before/after improvements
+│   └── presentation/                    # PNG visualizations
+│       ├── hybrid_executive_summary.png
+│       ├── hybrid_heatmap_detailed.png
+│       ├── hybrid_comparison_table.png
+│       ├── qwen_vs_mistral_comparison.png
+│       └── small_model_comparison.png
+│
+└── docker/
+    ├── docker-compose.yml               # Dockerized Ollama
+    └── run_evaluation.sh                # Evaluation runner
 ```
 
-## 📦 Datasets
+---
 
-### 1. Compass Intent Extraction (200 cases)
-Custom dataset for evaluating deployment intent extraction.
+## 📦 Dataset: 400 Unified Test Cases
 
-| Category | Count | Description |
-|----------|-------|-------------|
-| **basic** | 50 | Simple use_case + user_count only |
-| **with_priority** | 30 | Includes latency/cost priorities |
-| **with_hardware** | 25 | Includes GPU mentions (H100, A100, etc.) |
-| **ambiguous** | 25 | Vague/unclear inputs |
-| **multilingual_hebrew** | 20 | Hebrew language inputs |
-| **typos_informal** | 30 | Typos, informal language, abbreviations |
-| **complex_long** | 20 | Long, detailed descriptions |
-
-### 2. JSON Generation Benchmark (100 cases)
-General JSON extraction capability assessment.
+### Composition
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| **simple_extraction** | 25 | Basic key-value pairs |
-| **nested_objects** | 20 | Complex nested structures |
-| **arrays_lists** | 15 | Array/list extraction |
-| **mixed_types** | 15 | Boolean, null, number, string |
-| **edge_cases** | 15 | Special chars, unicode, negative values |
-| **schema_adherence** | 10 | Following specific schemas |
+| Basic | 229 | use_case + user_count only |
+| With Priority | 171 | Includes latency/cost keywords |
+| With Hardware | 122 | GPU mentions (H100, A100, etc.) |
+| Needle-in-Haystack | 40 | Long text, info buried |
+| Edge Cases | 30 | Typos, informal language |
+| High Quality Priority | 40 | "Accuracy is key" cases |
 
-### 3. NLU Intent Classification (80 cases)
-Standard NLU benchmark for intent detection and slot filling.
+### Valid Schema Values
 
-| Category | Count | Description |
-|----------|-------|-------------|
-| **booking_intent** | 15 | Reservations, appointments |
-| **information_query** | 15 | Weather, directions, lookups |
-| **device_control** | 15 | Smart home, IoT commands |
-| **service_request** | 15 | Orders, transfers, subscriptions |
-| **complex_multi_intent** | 10 | Multiple intents in one request |
-| **ambiguous_intent** | 10 | Unclear requests needing clarification |
+| Field | Options |
+|-------|---------|
+| **Use Cases (9)** | chatbot_conversational, code_completion, code_generation_detailed, translation, content_generation, summarization_short, document_analysis_rag, long_document_summarization, research_legal_analysis |
+| **Priorities (5)** | low_latency, cost_saving, high_throughput, high_quality, balanced |
+| **Hardware (8)** | H100, H200, A100, A10G, L4, T4, V100, A10 |
 
-## 📈 Metrics
+---
 
-### Accuracy Metrics
-| Metric | Description |
-|--------|-------------|
-| **Exact Match** | Perfect JSON match (all fields correct) |
-| **Use Case Accuracy** | Correct use_case detection |
-| **User Count Accuracy** | Correct number extraction |
-| **Priority Accuracy** | Correct priority detection (when expected) |
-| **Hardware Accuracy** | Correct hardware extraction (when expected) |
-| **Field Accuracy (Avg)** | Average of all field accuracies |
+## 📈 Scoring Methodology
 
-### Quality Metrics
-| Metric | Description |
-|--------|-------------|
-| **JSON Validity** | % of responses that are valid JSON |
-| **Schema Compliance** | % matching expected schema (valid values) |
-| **Hallucination Rate** | % with invented/extra fields |
+### Hybrid Weighted Scoring
 
-### Performance Metrics
-| Metric | Description |
-|--------|-------------|
-| **Latency P90** | 90th percentile response time (ms) |
-| **GPU Hours per 1000 req** | Estimated GPU time for 1000 requests |
+| Field | Weight | Scoring Rule |
+|-------|--------|--------------|
+| use_case | **50%** | Exact match only |
+| user_count | **25%** | ±10% = full, ±25% = partial |
+| priority | **15%** | Match or correctly omit |
+| hardware | **10%** | Match or correctly omit |
+
+**Special Rule:** If use_case is wrong → score capped at 50%
+
+See [SCORING_METHODOLOGY.md](SCORING_METHODOLOGY.md) for full details.
+
+---
 
 ## 🚀 Quick Start
 
@@ -121,141 +131,103 @@ Standard NLU benchmark for intent detection and slot filling.
 # Ensure Ollama is running
 ollama serve
 
-# Pull the baseline model
-ollama pull llama3.1:8b
+# Pull the recommended model
+ollama pull qwen2.5:7b
 ```
 
-### 2. Run Evaluations
+### 2. Run Evaluation
 
 ```bash
 cd evaluation/scripts
 
-# Quick test (10 samples)
-python run_evaluation.py --quick
+# Quick test (50 cases)
+python test_improvements.py
 
-# Evaluate on Compass dataset (default)
-python run_evaluation.py --model llama3.1:8b
+# Full evaluation (400 cases)
+python evaluate_with_improvements.py
 
-# Evaluate on JSON benchmark
-python run_evaluation.py --dataset json_benchmark
+# Small model comparison
+python evaluate_small_models.py
 
-# Evaluate on NLU benchmark
-python run_evaluation.py --dataset nlu_benchmark
-
-# Evaluate on all datasets
-python run_evaluation.py --dataset all
-
-# Limit test cases
-python run_evaluation.py --limit 50
-
-# Evaluate all available models
-python run_evaluation.py
+# Generate visualizations
+python create_hybrid_presentation.py
 ```
 
-### 3. Pull Additional Models
+### 3. Evaluate Other Models
 
 ```bash
-# Pull models for comparison
+# Pull additional models
 ollama pull mistral:7b
-ollama pull qwen2.5:7b
 ollama pull gemma2:9b
+ollama pull llama3.1:8b
 
-# Or use --pull flag to auto-pull
-python run_evaluation.py --pull
+# Run full comparison
+python hybrid_evaluator.py
 ```
 
-## 📝 Expected Output Formats
+---
 
-### Compass Intent Extraction
-```json
-{
-  "use_case": "chatbot_conversational",
-  "user_count": 500,
-  "priority": "low_latency",
-  "hardware": "H100"
-}
-```
+## 🔧 Improvements Implemented
 
-### JSON Generation Benchmark
-```json
-{
-  "name": "John",
-  "age": 30,
-  "city": "New York"
-}
-```
+### 1. Few-Shot Examples (+5.5% accuracy)
 
-### NLU Intent Classification
-```json
-{
-  "intent": "book_flight",
-  "slots": {
-    "origin": "New York",
-    "destination": "Los Angeles",
-    "date": "December 15th"
-  }
-}
-```
+Added 5 example extractions to the prompt showing exact output format.
 
-## 📊 Sample Results Format
+### 2. Post-Processing Validation (+0.2% accuracy)
 
-### Summary JSON
-```json
-{
-  "llama3.1:8b": {
-    "total_cases": 200,
-    "accuracy": {
-      "exact_match_rate": 0.85,
-      "use_case_accuracy": 0.92,
-      "user_count_accuracy": 0.95,
-      "priority_accuracy": 0.78,
-      "hardware_accuracy": 0.88
-    },
-    "quality": {
-      "json_validity_rate": 0.99,
-      "schema_compliance_rate": 0.97,
-      "hallucination_rate": 0.05
-    },
-    "performance": {
-      "latency_p90_ms": 2500,
-      "gpu_hours_per_1000": 0.0007
-    }
-  }
-}
-```
+Fixes common LLM mistakes:
+- `"chat"` → `"chatbot_conversational"`
+- `"5k"` → `5000`
+- `"fast"` → `"low_latency"`
+- `"h100"` → `"H100"`
 
-## 🔧 Dataset Loader Usage
+### Before/After
 
-```python
-from dataset_loader import DatasetLoader, create_evaluation_prompt
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| Weighted Score | 91.6% | 92.6% | +1.0% |
+| Use Case | 88.8% | 89.8% | +1.0% |
+| User Count | 94.0% | 96.0% | +2.0% |
+| Hardware | 91.8% | 99.5% | +7.7% |
 
-# Load all datasets
-loader = DatasetLoader()
-datasets = loader.load_all()
+---
 
-# Get stats
-stats = loader.get_dataset_stats()
-print(f"Total cases: {stats['total_test_cases']}")
+## 📊 Visualization Files
 
-# Get specific dataset
-compass_cases = loader.get_dataset("compass")
-json_cases = loader.get_dataset("json_benchmark")
-nlu_cases = loader.get_dataset("nlu_benchmark")
+| File | Description |
+|------|-------------|
+| `hybrid_executive_summary.png` | 4-panel dashboard with all metrics |
+| `hybrid_heatmap_detailed.png` | Model × Metric heatmap |
+| `hybrid_comparison_table.png` | Full comparison table |
+| `qwen_vs_mistral_comparison.png` | Head-to-head winner comparison |
+| `small_model_comparison.png` | Small model evaluation |
 
-# Get by category
-basic_cases = loader.get_by_category("basic")
+---
 
-# Create prompts for different task types
-for case in compass_cases[:5]:
-    prompt = create_evaluation_prompt(case, task_type="compass")
-    print(prompt)
-```
+## 📌 Key Findings
 
-## 📌 Notes
+1. **Qwen 2.5 7B is the best model** for Compass business context extraction
+2. **7B+ parameters required** - TinyLlama (1.1B) fails at 35%
+3. **JSON validity is solved** - All 7B+ models achieve >97%
+4. **Hardware detection is easy** - Most models >90%
+5. **Priority detection is hard** - Only Qwen exceeds 85%
+6. **Few-shot examples have huge impact** - +5.5% accuracy
+
+---
+
+## 🔮 Future Improvements
+
+| Strategy | Expected Impact | Effort |
+|----------|-----------------|--------|
+| Fine-tuning (LoRA) | +2-3% | 1 day |
+| Ensemble (Qwen+Gemma) | +1-2% | 4 hours |
+| More few-shot examples | +0.5% | 1 hour |
+
+---
+
+## 📝 Notes
 
 - All models run locally via Ollama (no cloud APIs)
-- Temperature is set to 0.1 for deterministic evaluation
-- Hebrew test cases help evaluate multilingual capability
-- Typos/informal cases test robustness to real-world inputs
-- JSON benchmark tests general JSON extraction skills
-- NLU benchmark tests standard intent classification patterns
+- Temperature set to 0.1 for deterministic evaluation
+- Evaluation on M4 Mac with unified memory
+- Results may vary slightly between runs

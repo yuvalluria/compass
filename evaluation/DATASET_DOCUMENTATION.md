@@ -5,6 +5,17 @@
 **File:** `evaluation/datasets/compass_evaluation_dataset.json`  
 **Total Cases:** 400 test cases  
 **Purpose:** Evaluate LLM models on **Business Context Extraction** task
+**Last Updated:** December 2024
+
+### Current Best Results (Qwen 2.5 7B with improvements)
+
+| Metric | Score |
+|--------|-------|
+| Weighted Score | **92.6%** |
+| Use Case | 89.8% |
+| User Count | 96.0% |
+| Priority | 85.8% |
+| Hardware | 99.5% |
 
 ---
 

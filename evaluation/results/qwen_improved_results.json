@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-12-08 12:58:35",
+  "improvements": [
+    "few-shot examples",
+    "post-processing validation"
+  ],
+  "before": {
+    "weighted_score": 0.916,
+    "use_case": 0.8875
+  },
+  "after": {
+    "model": "qwen2.5:7b",
+    "version": "with_improvements",
+    "description": "Few-shot examples + Post-processing validation",
+    "total_cases": 400,
+    "weighted_score": 0.9256875000000011,
+    "field_accuracy": {
+      "use_case": 0.8975,
+      "user_count": 0.96,
+      "priority": 0.8575,
+      "hardware": 0.995
+    },
+    "json_validity": 1.0,
+    "schema_compliance": 0.995,
+    "latency_ms": {
+      "avg": 1387.6984483003616,
+      "p90": 1822.2620487213135
+    },
+    "error_count": 0
+  }
+}
